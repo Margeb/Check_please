@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{template :: head(title = 'Check, please')}" />
+<body>
+    <th:block th:replace="~{template :: header}" />
+
+    <main>
+
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+
+                    <div class="col" th:each="group : ${groups}" >
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <p class="card-text"><a th:text="${group.name}">Default group</a></p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary"><a style="text-decoration: none" th:href="@{'/groups/' + ${group.id}}">View</a></button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary"><a style="text-decoration: none" th:href="@{'/admin/groups/' + ${group.id}}">Edit</a></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <th:block th:replace="~{template :: footer}" />
+</body>
+</html>

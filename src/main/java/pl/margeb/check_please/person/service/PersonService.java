@@ -1,0 +1,67 @@
+package pl.margeb.check_please.person.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pl.margeb.check_please.group.domain.model.Group;
+import pl.margeb.check_please.group.domain.repository.GroupRepository;
+import pl.margeb.check_please.group.service.GroupService;
+import pl.margeb.check_please.person.domain.model.Person;
+import pl.margeb.check_please.person.domain.repository.PersonRepository;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class PersonService {
+
+    private final PersonRepository personRepository;
+
+    private final GroupRepository groupRepository;
+
+    public PersonService(PersonRepository personRepository, GroupRepository groupRepository) {
+        this.personRepository = personRepository;
+        this.groupRepository = groupRepository;
+    }
+
+    @Transactional
+    public Person createPerson(UUID groupId, Person personRequest) {
+        Person person = new Person();
+        person.setName(personRequest.getName());
+
+        Group group = groupRepository.getById(groupId);
+
+        group.addPerson(person);
+
+        groupRepository.save(group);
+        personRepository.save(person);
+
+        return person;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Person> getAllPeople(UUID groupId) {
+
+        return personRepository.findByGroupId(groupId);
+    }
+
+    @Transactional(readOnly = true)
+    public Person getPerson(UUID id) {
+
+        return personRepository.getById(id);
+    }
+
+    @Transactional
+    public Person updatePerson(UUID personId, Person personRequest) {
+        Person person = new Person();
+
+        person.setName(personRequest.getName());
+
+        return personRepository.save(person);
+    }
+
+    @Transactional
+    public void deletePerson(UUID personId) {
+        personRepository.deleteById(personId);
+    }
+}

@@ -1,0 +1,48 @@
+package pl.margeb.check_please.person.controller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import pl.margeb.check_please.person.domain.model.Person;
+import pl.margeb.check_please.person.service.PersonService;
+
+import java.util.List;
+import java.util.UUID;
+
+@RequestMapping("api/v1/groups/{group-id}/people")
+@RestController
+public class PersonApiController {
+
+    private final PersonService personService;
+
+    public PersonApiController(PersonService personService) {
+        this.personService = personService;
+    }
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    Person createPerson(@PathVariable("group-id") UUID groupId, @RequestBody Person person){
+        return personService.createPerson(groupId, person);
+    }
+
+    @GetMapping
+    List<Person> getAllPeople(@PathVariable("group-id") UUID groupId){
+        return personService.getAllPeople(groupId);
+    }
+
+    @GetMapping("{person-id}")
+    Person getPerson(@PathVariable("group-id") UUID groupId, @PathVariable("person-id") UUID personId){
+        return personService.getPerson(personId);
+    }
+
+    @PutMapping("{person-id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    Person updatePerson(@PathVariable("group-id") UUID groupId, @PathVariable("person-id") UUID personId, @RequestBody Person person)
+    {
+        return personService.updatePerson(personId, person);
+    }
+
+    @DeleteMapping("{person-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deletePerson(@PathVariable("group-id") UUID groupId, @PathVariable("person-id") UUID personId){
+        personService.deletePerson(personId);
+    }
+}

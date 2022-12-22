@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"><head th:replace="~{template :: head(title = 'Check, please - ' + ${group.name})}" />
+    <body>
+        <th:block th:replace="~{template :: header}" />
+
+        <main>
+
+            <section class="py-5 text-center container">
+                <div class="row py-lg-5">
+                    <div class="col-lg-6 col-md-8 mx-auto">
+                        <h1 class="fw-light" th:text="${group.name}">Default group name</h1>
+                        <p class="lead text-muted" th:text="${group.id}">Default group ID</p>
+                    </div>
+                </div>
+            </section>
+
+                <table style="margin-left: auto; margin-right: auto">
+                    <tr>
+                        <td style="vertical-align: top">
+
+                            <table class="steelBlueCols">
+                                <thead>
+                                <tr>
+                                    <th colspan="2">Bills</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="bill : ${bills}">
+                                    <td th:text="${bill.date}">Bill date</td>
+                                    <td th:text="${bill.name}">Bill name</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </td>
+                        <td style="vertical-align: top">
+
+                            <table class="steelBlueCols">
+                                <thead>
+                                <tr>
+                                    <th colspan="2">Person</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="person : ${people}">
+                                    <td th:text="${person.name}">Person name</td>
+                                    <td th:text="${person.balance}">Person balance</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </td>
+                    </tr>
+
+                </table>
+
+
+        </main>
+
+        <th:block th:replace="~{template :: footer}" />
+    </body>
+</html>
