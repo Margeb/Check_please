@@ -1,12 +1,11 @@
 package pl.margeb.check_please.bill.domain.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import pl.margeb.check_please.group.domain.model.Group;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 @Entity
 @Table(name = "bills")
@@ -16,6 +15,9 @@ public class Bill {
     private UUID id;
     private String name;
     private LocalDate date;
+
+    @OneToMany
+    private Set<BillOperation> billOperations;
 
     @ManyToOne
     private Group group;
@@ -71,5 +73,14 @@ public class Bill {
                 ", date=" + date +
                 ", group=" + group +
                 '}';
+    }
+
+    public void addBillOperation(BillOperation billOperation) {
+        if(billOperations == null)
+        {
+            billOperations = new HashSet<>();
+        }
+
+        billOperations.add(billOperation);
     }
 }

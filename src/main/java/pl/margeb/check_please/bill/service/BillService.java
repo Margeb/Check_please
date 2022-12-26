@@ -1,5 +1,6 @@
 package pl.margeb.check_please.bill.service;
 
+import jakarta.persistence.EntityManager;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 import pl.margeb.check_please.bill.domain.model.Bill;
@@ -29,11 +30,12 @@ public class BillService {
 
         Group group = groupRepository.getById(groupId);
 
+        bill.setGroup(group);
+
         group.addBill(bill);
 
-        groupRepository.save(group);
         billRepository.save(bill);
-
+        groupRepository.save(group);
 
         return bill;
     }
