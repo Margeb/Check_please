@@ -6,6 +6,8 @@ import pl.margeb.check_please.bill.domain.model.Bill;
 import pl.margeb.check_please.bill.domain.model.BillOperation;
 import pl.margeb.check_please.bill.domain.repository.BillOperationRepository;
 import pl.margeb.check_please.bill.domain.repository.BillRepository;
+import pl.margeb.check_please.person.domain.model.Person;
+import pl.margeb.check_please.person.domain.repository.PersonRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,10 +18,13 @@ public class BillOperationService {
     private final BillOperationRepository billOperationRepository;
 
     private final BillRepository billRepository;
+    private final PersonRepository personRepository;
 
-    public BillOperationService(BillOperationRepository billOperationRepository, BillRepository billRepository) {
+    public BillOperationService(BillOperationRepository billOperationRepository, BillRepository billRepository,
+                                PersonRepository personRepository) {
         this.billOperationRepository = billOperationRepository;
         this.billRepository = billRepository;
+        this.personRepository = personRepository;
     }
 
     @Transactional
@@ -32,10 +37,14 @@ public class BillOperationService {
         billOperation.setCost(billOperationRequest.getCost());
 
 
+        Person person = billOperation.getPerson();
         Bill bill = billRepository.getById(billId);
 
         bill.addBillOperation(billOperation);
+        person.addBillOperation(billOperation);
+        person.setBalance(person.getBalance().add(billOperation.getDeposit()).add(billOperation.getCost().negate()));
 
+        personRepository.save(person);
         billRepository.save(bill);
         billOperationRepository.save(billOperation);
 

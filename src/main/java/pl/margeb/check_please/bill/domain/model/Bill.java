@@ -16,7 +16,7 @@ public class Bill {
     private String name;
     private LocalDate date;
 
-    @OneToMany
+    @OneToMany(mappedBy = "bill")
     private Set<BillOperation> billOperations;
 
     @ManyToOne
@@ -64,6 +64,13 @@ public class Bill {
         this.group = group;
     }
 
+    public Set<BillOperation> getBillOperations() {
+        return billOperations;
+    }
+
+    public void setBillOperations(Set<BillOperation> billOperations) {
+        this.billOperations = billOperations;
+    }
 
     @Override
     public String toString() {

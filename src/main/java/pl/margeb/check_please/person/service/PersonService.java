@@ -33,8 +33,8 @@ public class PersonService {
 
         group.addPerson(person);
 
-        groupRepository.save(group);
         personRepository.save(person);
+        groupRepository.save(group);
 
         return person;
     }

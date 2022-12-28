@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"><head th:replace="~{template :: head(title = 'Check, please - new group')}" />
+<html lang="en" xmlns:th="http://www.thymeleaf.org"><head th:replace="~{template :: head(title = 'Check, please - new person')}" />
 <body>
 <th:block th:replace="~{template :: header}" />
 
@@ -8,8 +8,8 @@
     <section class="py-5 text-center container">
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
-                <h1>New group</h1><br />
-                <form method="post" action="/groups" th:object="${group}">
+                <h1>New person</h1><br />
+                <form method="post" th:action="@{'/groups/' + ${group.id} + '/people'}" th:object="${person}">
                     Name: <input type="text" th:field="*{name}" /> <br /><br />
 
                     <input type="submit" value="Add" />

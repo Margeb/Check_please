@@ -1,12 +1,12 @@
 package pl.margeb.check_please.person.domain.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import pl.margeb.check_please.bill.domain.model.BillOperation;
 import pl.margeb.check_please.group.domain.model.Group;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -17,6 +17,9 @@ public class Person {
     private UUID id;
     private String name;
     private BigDecimal balance;
+
+    @OneToMany(mappedBy = "person")
+    private Set<BillOperation> billOperations;
 
     @ManyToOne
     private Group group;
@@ -63,12 +66,24 @@ public class Person {
         this.group = group;
     }
 
+
     @Override
     public String toString() {
         return "Person{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", balance=" + balance +
+                ", billOperations=" + billOperations +
+                ", group=" + group +
                 '}';
+    }
+
+    public void addBillOperation(BillOperation billOperation) {
+        if(billOperations == null)
+        {
+            billOperations = new HashSet<>();
+        }
+
+        billOperations.add(billOperation);
     }
 }

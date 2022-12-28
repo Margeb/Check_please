@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Bills_operations")
+@Table(name = "bill_operations")
 public class BillOperation {
     @Id
     private UUID id;
@@ -15,7 +15,7 @@ public class BillOperation {
     @ManyToOne
     private Bill bill;
 
-    @OneToOne
+    @ManyToOne
     private Person person;
 
     private BigDecimal deposit;
@@ -24,14 +24,6 @@ public class BillOperation {
 
     public BillOperation() {
         this.id = UUID.randomUUID();
-    }
-
-    public BillOperation(Bill bill, Person person, BigDecimal deposit, BigDecimal cost) {
-        this();
-        this.bill = bill;
-        this.person = person;
-        this.deposit = deposit;
-        this.cost = cost;
     }
 
     public UUID getId() {

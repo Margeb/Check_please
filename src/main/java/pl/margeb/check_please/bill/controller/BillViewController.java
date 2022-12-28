@@ -21,7 +21,6 @@ public class BillViewController {
 
     private final GroupService groupService;
     private final BillService billService;
-
     private final BillOperationService billOperationService;
 
     private final PersonService personService;
@@ -45,10 +44,8 @@ public class BillViewController {
 
     @GetMapping("{id}")
     public String singleView(Model model, @PathVariable UUID id, @PathVariable("group-id") UUID groupId){
-        model.addAttribute("group", groupService.getGroup(groupId));
-        model.addAttribute("bills", billService.getBills(groupId));
+        model.addAttribute("bill", billService.getBill(id));
         model.addAttribute("billOperations", billOperationService.getBillOperations(id));
-        model.addAttribute("people", personService.getAllPeople(groupId));
 
         return "bill/single";
     }
