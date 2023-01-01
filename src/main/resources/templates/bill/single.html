@@ -27,12 +27,12 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>Name</td>
+                                    <td>Person's ID</td>
                                     <td>+</td>
                                     <td>-</td>
                                 </tr>
                                 <tr th:each="billOperation : ${billOperations}">
-                                    <td th:text="${billOperation.person.name}">Default Person</td>
+                                    <td th:text="${billOperation.personId}">Default Person</td>
                                     <td th:text="${billOperation.deposit}">Default Person's deposit</td>
                                     <td th:text="${billOperation.cost}">Default Person's cost</td>
                                 </tr>

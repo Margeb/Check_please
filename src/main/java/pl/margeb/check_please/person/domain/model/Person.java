@@ -18,7 +18,7 @@ public class Person {
     private String name;
     private BigDecimal balance;
 
-    @OneToMany(mappedBy = "person")
+    @OneToMany
     private Set<BillOperation> billOperations;
 
     @ManyToOne
