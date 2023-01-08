@@ -1,6 +1,9 @@
 package pl.margeb.check_please.person.domain.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import org.springframework.format.annotation.NumberFormat;
 import pl.margeb.check_please.bill.domain.model.BillOperation;
 import pl.margeb.check_please.group.domain.model.Group;
 
@@ -15,7 +18,10 @@ public class Person {
 
     @Id
     private UUID id;
+    @NotBlank(message = "{check.validation.name.NotBlank.message}")
+    @Size(min = 3, max = 255)
     private String name;
+    @NumberFormat
     private BigDecimal balance;
 
     @OneToMany

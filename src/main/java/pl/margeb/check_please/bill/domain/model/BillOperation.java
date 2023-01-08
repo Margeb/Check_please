@@ -1,6 +1,8 @@
 package pl.margeb.check_please.bill.domain.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.NumberFormat;
 import pl.margeb.check_please.person.domain.model.Person;
 import pl.margeb.check_please.person.service.PersonService;
 
@@ -17,10 +19,13 @@ public class BillOperation {
     @ManyToOne
     private Bill bill;
 
+    @NotNull
     private UUID personId;
 
+    @NumberFormat
     private BigDecimal deposit;
 
+    @NumberFormat
     private BigDecimal cost;
 
     public BillOperation() {

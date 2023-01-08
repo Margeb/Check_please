@@ -1,5 +1,6 @@
 package pl.margeb.check_please.group.controller;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +31,7 @@ public class GroupViewController {
 
     @GetMapping
     public String indexView(Model model){
-        model.addAttribute("groups", groupService.getGroups());
+        model.addAttribute("groups", groupService.getGroups(Pageable.unpaged()));
 
         return "group/index";
     }

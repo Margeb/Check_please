@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import pl.margeb.check_please.bill.domain.model.Bill;
 import pl.margeb.check_please.person.domain.model.Person;
 
@@ -18,6 +20,8 @@ public class Group {
 
     @Id
     private UUID id;
+    @NotBlank(message = "{check.validation.name.NotBlank.message}")
+    @Size(min = 3, max = 255)
     private String name;
 
     @OneToMany(mappedBy = "group")

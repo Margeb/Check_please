@@ -1,5 +1,6 @@
 package pl.margeb.check_please.bill.controller;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +38,7 @@ public class BillViewController {
 
     @GetMapping
     public String indexView(Model model, @PathVariable("group-id")UUID groupId){
-        model.addAttribute("groups", groupService.getGroups());
+        model.addAttribute("groups", groupService.getGroups(Pageable.unpaged()));
 
         return "group/index";
     }
@@ -46,6 +47,7 @@ public class BillViewController {
     public String singleView(Model model, @PathVariable UUID id, @PathVariable("group-id") UUID groupId){
         model.addAttribute("bill", billService.getBill(id));
         model.addAttribute("billOperations", billOperationService.getBillOperations(id));
+        model.addAttribute("groupId", groupId);
 
         return "bill/single";
     }

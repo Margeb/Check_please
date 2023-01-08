@@ -1,27 +1,47 @@
 package pl.margeb.check_please.group.service;
 
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.margeb.check_please.bill.domain.model.Bill;
+import pl.margeb.check_please.bill.domain.model.BillOperation;
+import pl.margeb.check_please.bill.service.BillOperationService;
+import pl.margeb.check_please.bill.service.BillService;
 import pl.margeb.check_please.group.domain.model.Group;
 import pl.margeb.check_please.group.domain.repository.GroupRepository;
+import pl.margeb.check_please.person.domain.model.Person;
+import pl.margeb.check_please.person.service.PersonService;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class GroupService {
 
     private final GroupRepository groupRepository;
+    private final PersonService personService;
+    private final BillService billService;
+    private final BillOperationService billOperationService;
 
-    public GroupService(GroupRepository groupRepository) {
-        this.groupRepository = groupRepository;
-    }
 
     @Transactional(readOnly = true)
-    public List<Group> getGroups() {
-        return groupRepository.findAll();
+    public Page<Group> getGroups(Pageable pageable) {
+        return getGroups(null, pageable);
+    }
+
+
+    @Transactional(readOnly = true)
+    public Page<Group> getGroups(String search, Pageable pageable) {
+        if(search == null){
+            return groupRepository.findAll(pageable);
+        } else {
+            return groupRepository.findByNameContainingIgnoreCase(search, pageable);
+        }
+
     }
 
     @Transactional(readOnly = true)
@@ -49,6 +69,17 @@ public class GroupService {
 
     @Transactional
     public void deleteGroup(UUID id) {
+        for(Bill bill : billService.getBills(id)){
+            for(BillOperation billOperation : billOperationService.getBillOperations(bill.getId())){
+                billOperationService.deleteBillOperation(billOperation.getId());
+            }
+            billService.deleteBill(bill.getId());
+        }
+
+        for(Person person : personService.getAllPeople(id)){
+            personService.deletePerson(person.getId());
+        }
+
         groupRepository.deleteById(id);
     }
 }

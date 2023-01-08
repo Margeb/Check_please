@@ -17,7 +17,7 @@
                                 <p class="card-text">---New group---</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary"><a style="text-decoration: none" th:href="@{'/groups/add'}">Add</a></button>
+                                        <a class="groupIndexButton" th:href="@{'/groups/add'}">Add</a>
                                     </div>
                                 </div>
                             </div>
@@ -31,8 +31,9 @@
                                 <p class="card-text"><a th:text="${group.name}">Default group</a></p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary"><a style="text-decoration: none" th:href="@{'/groups/' + ${group.id}}">View</a></button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary"><a style="text-decoration: none" th:href="@{'/admin/groups/' + ${group.id}}">Edit</a></button>
+                                        <a class="groupIndexButton" th:href="@{'/groups/' + ${group.id}}">View</a>
+                                        <a class="groupIndexButton" th:href="@{'/admin/groups/' + ${group.id}}">Edit</a>
+                                        <a class="groupIndexButton" th:href="@{'/admin/groups/' + ${group.id} + '/delete'}">Delete</a>
                                     </div>
                                 </div>
                             </div>

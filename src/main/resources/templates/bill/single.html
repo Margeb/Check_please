@@ -8,8 +8,8 @@
             <section class="py-5 text-center container">
                 <div class="row py-lg-5">
                     <div class="col-lg-6 col-md-8 mx-auto">
+                        <a class="groupIndexButton" th:href="@{'/groups/' + ${groupId}}">←Back</a>
                         <h1 class="fw-light" th:text="${bill.name}">Default bill name</h1>
-                        <p class="lead text-muted" th:text="${bill.id}">Default bill ID</p>
                     </div>
                 </div>
             </section>

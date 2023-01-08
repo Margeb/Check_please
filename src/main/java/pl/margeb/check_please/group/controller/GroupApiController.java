@@ -1,5 +1,7 @@
 package pl.margeb.check_please.group.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.margeb.check_please.group.service.GroupService;
@@ -19,8 +21,8 @@ public class GroupApiController {
     }
 
     @GetMapping
-    List<Group> getGroups(){
-        return groupService.getGroups();
+    Page<Group> getGroups(Pageable pageable){
+        return groupService.getGroups(pageable);
     }
 
     @GetMapping("{id}")
