@@ -1,10 +1,7 @@
 package pl.margeb.check_please.group.domain.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import pl.margeb.check_please.bill.domain.model.Bill;
@@ -22,6 +19,7 @@ public class Group {
     private UUID id;
     @NotBlank(message = "{check.validation.name.NotBlank.message}")
     @Size(min = 3, max = 255)
+    @Column(unique = true)
     private String name;
 
     @OneToMany(mappedBy = "group")

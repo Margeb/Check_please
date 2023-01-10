@@ -2,7 +2,6 @@ package pl.margeb.check_please.bill.domain.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.margeb.check_please.bill.domain.model.Bill;
 import pl.margeb.check_please.bill.domain.model.BillOperation;
 
 import java.util.List;

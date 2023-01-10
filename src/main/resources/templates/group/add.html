@@ -8,10 +8,13 @@
     <section class="py-5 text-center container">
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
-                <a class="groupIndexButton" th:href="@{'/groups/'}">←Back</a>
+                <a class="groupIndexButton" th:href="@{'/groups'}">←Back</a>
                 <h1>New group</h1><br />
                 <form method="post" action="/groups" th:object="${group}">
-                    Name: <input type="text" th:field="*{name}" /> <br /><br />
+
+                    Name: <br />
+                    <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</span> <br />
+                    <input type="text" th:field="*{name}" /> <br /><br />
 
                     <input type="submit" value="Add" />
 

@@ -73,16 +73,16 @@ public class GroupAdminViewController {
         if(bindingResult.hasErrors()){
 
             model.addAttribute("group", group);
-            model.addAttribute("message", Message.error("Błąd zapisu"));
+            model.addAttribute("message", Message.error("Saving error"));
             return "admin/group/edit";
         }
 
         try {
             groupService.updateGroup(id,group);
-            ra.addFlashAttribute("message", Message.info("Grupa zapisana"));
+            ra.addFlashAttribute("message", Message.info("Group saved"));
         } catch(Exception e){
             model.addAttribute("group", groupService.getGroup(id));
-            model.addAttribute("message", Message.error("Nieznany błąd zapisu"));
+            model.addAttribute("message", Message.error("Unknown saving error"));
             return "admin/group/edit";
         }
 
@@ -93,7 +93,7 @@ public class GroupAdminViewController {
     @GetMapping("{id}/delete")
     public String deleteView(@PathVariable UUID id, RedirectAttributes ra){
         groupService.deleteGroup(id);
-        ra.addFlashAttribute("message", Message.info("Grupa usunięta"));
+        ra.addFlashAttribute("message", Message.info("Group deleted"));
         return "redirect:/admin/groups";
     }
 

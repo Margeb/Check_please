@@ -20,6 +20,7 @@ public class Person {
     private UUID id;
     @NotBlank(message = "{check.validation.name.NotBlank.message}")
     @Size(min = 3, max = 255)
+    @Column(unique = true)
     private String name;
     @NumberFormat
     private BigDecimal balance;

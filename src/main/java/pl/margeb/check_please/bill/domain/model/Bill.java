@@ -19,6 +19,7 @@ public class Bill {
     private UUID id;
     @NotBlank(message = "{check.validation.name.NotBlank.message}")
     @Size(min = 3, max = 255)
+    @Column(unique = true)
     private String name;
     @DateTimeFormat
     private LocalDate date;

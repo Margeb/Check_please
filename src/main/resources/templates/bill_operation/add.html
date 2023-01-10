@@ -11,7 +11,15 @@
                 <a class="groupIndexButton" th:href="@{'/groups/' + ${group.id} + '/bills/' + ${bill.id}}">←Back</a>
                 <h1>New bill operation</h1><br />
 
+
                     <form method="post" th:action="@{'/groups/' + ${group.id} + '/bills/' + ${bill.id} + '/operations'}" th:object="${billOperation}">
+
+                        <div class="error" th:if="${#fields.hasAnyErrors()}">
+                            <ul>
+                                <li th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+                            </ul>
+                        </div>
+
                         <select th:field="*{personId}">
 
                             <option th:each="person : ${people}" th:utext="${person.name}" th:value="${person.id}">
@@ -20,8 +28,14 @@
                         </select>
                         <br /><br />
 
-                        Deposit: <input type="text" th:field="*{deposit}" /> <br />
-                        Cost: <input type="text" th:field="*{cost}" /> <br />
+                        Deposit:<br />
+                        <span class="error" th:if="${#fields.hasErrors('deposit')}" th:errors="*{deposit}">Deposit Error</span> <br />
+                        <input type="text" th:field="*{deposit}" /> <br />
+
+                        Cost:<br />
+                        <span class="error" th:if="${#fields.hasErrors('cost')}" th:errors="*{cost}">Cost Error</span> <br />
+                        <input type="text" th:field="*{cost}" /> <br />
+
 
                         <input type="submit" value="Add" />
                     </form>

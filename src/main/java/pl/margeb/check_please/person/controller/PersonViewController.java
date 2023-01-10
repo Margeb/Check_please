@@ -1,12 +1,13 @@
 package pl.margeb.check_please.person.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.margeb.check_please.common.dto.Message;
 import pl.margeb.check_please.group.service.GroupService;
 import pl.margeb.check_please.person.domain.model.Person;
 import pl.margeb.check_please.person.service.PersonService;
@@ -41,8 +42,31 @@ public class PersonViewController {
     }
 
     @PostMapping
-    public String add(@PathVariable("group-id") UUID groupId, Person person){
-        personService.createPerson(groupId, person);
+    public String add(@PathVariable("group-id") UUID groupId,
+                      @Valid @ModelAttribute("person") Person person,
+                      BindingResult bindingResult,
+                      RedirectAttributes ra,
+                      Model model){
+
+        if(bindingResult.hasErrors()){
+            model.addAttribute("person", person);
+            model.addAttribute("message", Message.error("Saving error"));
+            model.addAttribute("group", groupService.getGroup(groupId));
+            return "person/add";
+        }
+
+        try{
+            personService.createPerson(groupId, person);
+            ra.addFlashAttribute("message", Message.info("Person created"));
+
+        } catch (Exception e){
+            model.addAttribute("person", person);
+            model.addAttribute("message", Message.error("Unknown creating error"));
+            model.addAttribute("group", groupService.getGroup(groupId));
+            return "person/add";
+        }
+
+
 
         return "redirect:/groups/{group-id}";
     }
