@@ -3,6 +3,7 @@ package pl.margeb.check_please.person.domain.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 import org.springframework.format.annotation.NumberFormat;
 import pl.margeb.check_please.bill.domain.model.BillOperation;
 import pl.margeb.check_please.group.domain.model.Group;
@@ -13,6 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
+@Data
 @Table(name = "people")
 public class Person {
 
@@ -39,50 +41,6 @@ public class Person {
     public Person(String name) {
         this();
         this.name = name;
-    }
-
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Person{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", balance=" + balance +
-                ", billOperations=" + billOperations +
-                ", group=" + group +
-                '}';
     }
 
     public void addBillOperation(BillOperation billOperation) {

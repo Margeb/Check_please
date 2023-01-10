@@ -1,5 +1,6 @@
 package pl.margeb.check_please.group.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -7,18 +8,15 @@ import org.springframework.web.bind.annotation.*;
 import pl.margeb.check_please.group.service.GroupService;
 import pl.margeb.check_please.group.domain.model.Group;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("api/v1/groups")
 public class GroupApiController {
 
     private final GroupService groupService;
 
-    public GroupApiController(GroupService groupService) {
-        this.groupService = groupService;
-    }
 
     @GetMapping
     Page<Group> getGroups(Pageable pageable){

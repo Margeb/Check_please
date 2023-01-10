@@ -1,5 +1,6 @@
 package pl.margeb.check_please.bill.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 import pl.margeb.check_please.bill.domain.model.Bill;
@@ -10,29 +11,18 @@ import pl.margeb.check_please.person.domain.model.Person;
 import pl.margeb.check_please.person.domain.repository.PersonRepository;
 import pl.margeb.check_please.person.service.PersonService;
 
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@AllArgsConstructor
 public class BillOperationService {
 
     private final BillOperationRepository billOperationRepository;
-
     private final BillRepository billRepository;
     private final PersonRepository personRepository;
     private final PersonService personService;
 
-    public BillOperationService(BillOperationRepository billOperationRepository,
-                                BillRepository billRepository,
-                                PersonRepository personRepository,
-                                PersonService personService) {
-        this.billOperationRepository = billOperationRepository;
-        this.billRepository = billRepository;
-        this.personRepository = personRepository;
-        this.personService = personService;
-    }
 
     @Transactional
     public BillOperation createBillOperation(UUID billId, BillOperation billOperationRequest) {

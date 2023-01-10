@@ -1,28 +1,24 @@
 package pl.margeb.check_please.person.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.margeb.check_please.group.domain.model.Group;
 import pl.margeb.check_please.group.domain.repository.GroupRepository;
-import pl.margeb.check_please.group.service.GroupService;
 import pl.margeb.check_please.person.domain.model.Person;
 import pl.margeb.check_please.person.domain.repository.PersonRepository;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class PersonService {
 
     private final PersonRepository personRepository;
 
     private final GroupRepository groupRepository;
 
-    public PersonService(PersonRepository personRepository, GroupRepository groupRepository) {
-        this.personRepository = personRepository;
-        this.groupRepository = groupRepository;
-    }
 
     @Transactional
     public Person createPerson(UUID groupId, Person personRequest) {

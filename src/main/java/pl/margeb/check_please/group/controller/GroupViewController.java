@@ -1,6 +1,7 @@
 package pl.margeb.check_please.group.controller;
 
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import pl.margeb.check_please.person.service.PersonService;
 import java.util.UUID;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/groups")
 public class GroupViewController {
 
@@ -24,11 +26,6 @@ public class GroupViewController {
 
     private final PersonService personService;
 
-    public GroupViewController(GroupService groupService, BillService billService, PersonService personService) {
-        this.groupService = groupService;
-        this.billService = billService;
-        this.personService = personService;
-    }
 
     @GetMapping
     public String indexView(Model model){

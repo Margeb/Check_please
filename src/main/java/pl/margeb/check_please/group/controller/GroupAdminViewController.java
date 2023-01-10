@@ -1,6 +1,7 @@
 package pl.margeb.check_please.group.controller;
 
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,14 +21,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/admin/groups")
 public class GroupAdminViewController {
 
     private final GroupService groupService;
-
-    public GroupAdminViewController(GroupService groupService) {
-        this.groupService = groupService;
-    }
 
     @GetMapping
     public String indexView(
