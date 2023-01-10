@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"><head th:replace="~{template :: head(title = 'Check, please - new bill operation')}" />
+<body>
+<th:block th:replace="~{template :: header}" />
+
+<main>
+
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <a class="groupIndexButton" th:href="@{'/groups/' + ${group.id} + '/bills/' + ${bill.id}}">←Back</a>
+                <h1>New bill operation</h1><br />
+
+
+                    <form method="post" th:action="@{'/groups/' + ${group.id} + '/bills/' + ${bill.id} + '/operations'}" th:object="${billOperation}">
+
+                        <div class="error" th:if="${#fields.hasAnyErrors()}">
+                            <ul>
+                                <li th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+                            </ul>
+                        </div>
+
+                        <select th:field="*{personId}">
+
+                            <option th:each="person : ${people}" th:utext="${person.name}" th:value="${person.id}">
+                            </option>
+
+                        </select>
+                        <br /><br />
+
+                        Deposit:<br />
+                        <span class="error" th:if="${#fields.hasErrors('deposit')}" th:errors="*{deposit}">Deposit Error</span> <br />
+                        <input type="text" th:field="*{deposit}" /> <br />
+
+                        Cost:<br />
+                        <span class="error" th:if="${#fields.hasErrors('cost')}" th:errors="*{cost}">Cost Error</span> <br />
+                        <input type="text" th:field="*{cost}" /> <br />
+
+
+                        <input type="submit" value="Add" />
+                    </form>
+
+
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<th:block th:replace="~{template :: footer}" />
+</body>
+</html>

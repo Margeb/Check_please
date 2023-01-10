@@ -1,43 +1,50 @@
 package pl.margeb.check_please.bill.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 import pl.margeb.check_please.bill.domain.model.Bill;
 import pl.margeb.check_please.bill.domain.model.BillOperation;
 import pl.margeb.check_please.bill.domain.repository.BillOperationRepository;
 import pl.margeb.check_please.bill.domain.repository.BillRepository;
+import pl.margeb.check_please.person.domain.model.Person;
+import pl.margeb.check_please.person.domain.repository.PersonRepository;
+import pl.margeb.check_please.person.service.PersonService;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@AllArgsConstructor
 public class BillOperationService {
 
     private final BillOperationRepository billOperationRepository;
-
     private final BillRepository billRepository;
+    private final PersonRepository personRepository;
+    private final PersonService personService;
 
-    public BillOperationService(BillOperationRepository billOperationRepository, BillRepository billRepository) {
-        this.billOperationRepository = billOperationRepository;
-        this.billRepository = billRepository;
-    }
 
     @Transactional
     public BillOperation createBillOperation(UUID billId, BillOperation billOperationRequest) {
-        BillOperation billOperation = new BillOperation();
 
-        billOperation.setBill(billOperationRequest.getBill());
-        billOperation.setPerson(billOperationRequest.getPerson());
+        BillOperation billOperation = new BillOperation();
+        Bill bill = billRepository.getById(billId);
+
+        billOperation.setBill(bill);
+        billOperation.setPersonId(billOperationRequest.getPersonId());
         billOperation.setDeposit(billOperationRequest.getDeposit());
         billOperation.setCost(billOperationRequest.getCost());
 
-
-        Bill bill = billRepository.getById(billId);
+        Person person = personService.getPerson(billOperation.getPersonId());
 
         bill.addBillOperation(billOperation);
+        person.addBillOperation(billOperation);
+        person.setBalance(person.getBalance().add(billOperation.getDeposit()).add(billOperation.getCost().negate()));
 
-        billRepository.save(bill);
         billOperationRepository.save(billOperation);
+        personRepository.save(person);
+        billRepository.save(bill);
+
 
         return billOperation;
     }

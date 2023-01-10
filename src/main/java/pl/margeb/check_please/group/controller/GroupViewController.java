@@ -1,12 +1,15 @@
 package pl.margeb.check_please.group.controller;
 
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.margeb.check_please.bill.service.BillService;
+import pl.margeb.check_please.common.dto.Message;
 import pl.margeb.check_please.group.domain.model.Group;
 import pl.margeb.check_please.group.service.GroupService;
 import pl.margeb.check_please.person.service.PersonService;
@@ -14,6 +17,7 @@ import pl.margeb.check_please.person.service.PersonService;
 import java.util.UUID;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/groups")
 public class GroupViewController {
 
@@ -22,15 +26,10 @@ public class GroupViewController {
 
     private final PersonService personService;
 
-    public GroupViewController(GroupService groupService, BillService billService, PersonService personService) {
-        this.groupService = groupService;
-        this.billService = billService;
-        this.personService = personService;
-    }
 
     @GetMapping
     public String indexView(Model model){
-        model.addAttribute("groups", groupService.getGroups());
+        model.addAttribute("groups", groupService.getGroups(Pageable.unpaged()));
 
         return "group/index";
     }
@@ -51,8 +50,28 @@ public class GroupViewController {
     }
 
     @PostMapping
-    public String add(Group group){
-        groupService.createGroup(group);
+    public String add(@Valid @ModelAttribute("group") Group group,
+                      BindingResult bindingResult,
+                      RedirectAttributes ra,
+                      Model model){
+
+        if(bindingResult.hasErrors()){
+            model.addAttribute("group", group);
+            model.addAttribute("message", Message.error("Saving error"));
+            return "group/add";
+        }
+
+        try{
+            groupService.createGroup(group);
+            ra.addFlashAttribute("message", Message.info("Group created"));
+
+        } catch (Exception e){
+            model.addAttribute("group", group);
+            model.addAttribute("message", Message.error("Unknown creating error"));
+            return "group/add";
+        }
+
+
 
         return "redirect:/groups";
     }

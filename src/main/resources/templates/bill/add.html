@@ -1,18 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Form to add new bill</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"><head th:replace="~{template :: head(title = 'Check, please - new bill')}" />
 <body>
-    <h1>New Bill</h1>
+<th:block th:replace="~{template :: header}" />
 
-    <form method="post" th:action="@{'/groups/' + ${group.id} + '/bills'}" th:object="${bill}">
-        Name: <input type="text" th:field="*{name}" /> <br />
+<main>
 
-        <input type="submit" value="Add" />
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <a class="groupIndexButton" th:href="@{'/groups/' + ${group.id}}">←Back</a>
+                <h1>New bill</h1><br />
+                <form method="post" th:action="@{'/groups/' + ${group.id} + '/bills'}" th:object="${bill}">
+                    Name: <br />
+                    <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</span> <br />
+                    <input type="text" th:field="*{name}" /> <br /><br />
 
-    </form>
+                    <input type="submit" value="Add" />
 
+                </form>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<th:block th:replace="~{template :: footer}" />
 </body>
 </html>

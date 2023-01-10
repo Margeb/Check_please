@@ -1,5 +1,6 @@
 package pl.margeb.check_please.bill.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.margeb.check_please.bill.domain.model.Bill;
@@ -10,13 +11,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/groups/{group-id}/bills")
+@AllArgsConstructor
 public class BillApiController {
 
     private final BillService billService;
-
-    public BillApiController(BillService billService) {
-        this.billService = billService;
-    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

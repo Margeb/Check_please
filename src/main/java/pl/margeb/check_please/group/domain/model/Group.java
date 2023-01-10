@@ -1,10 +1,10 @@
 package pl.margeb.check_please.group.domain.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 import pl.margeb.check_please.bill.domain.model.Bill;
 import pl.margeb.check_please.person.domain.model.Person;
 
@@ -13,11 +13,15 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 @Entity
+@Data
 @Table(name = "groups")
 public class Group {
 
     @Id
     private UUID id;
+    @NotBlank(message = "{check.validation.name.NotBlank.message}")
+    @Size(min = 3, max = 255)
+    @Column(unique = true)
     private String name;
 
     @OneToMany(mappedBy = "group")
@@ -44,23 +48,6 @@ public class Group {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-
     public Group addBill(Bill bill)
     {
         if(bills == null)
@@ -82,13 +69,5 @@ public class Group {
         person.setGroup(this);
 
         people.add(person);
-    }
-
-    @Override
-    public String toString() {
-        return "Group{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
     }
 }

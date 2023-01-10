@@ -1,6 +1,6 @@
 package pl.margeb.check_please.bill.service;
 
-import jakarta.persistence.EntityManager;
+import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 import pl.margeb.check_please.bill.domain.model.Bill;
@@ -12,16 +12,12 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@AllArgsConstructor
 public class BillService {
 
     private final BillRepository billRepository;
-
     private final GroupRepository groupRepository;
 
-    public BillService(BillRepository billRepository, GroupRepository groupRepository) {
-        this.billRepository = billRepository;
-        this.groupRepository = groupRepository;
-    }
 
     @Transactional
     public Bill createBill(UUID groupId, Bill billRequest) {
@@ -34,9 +30,10 @@ public class BillService {
 
         group.addBill(bill);
 
+        billRepository.save(bill);
         groupRepository.save(group);
 
-        return billRepository.save(bill);
+        return bill;
     }
 
     @Transactional(readOnly = true)

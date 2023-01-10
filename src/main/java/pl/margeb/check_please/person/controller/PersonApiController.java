@@ -1,5 +1,6 @@
 package pl.margeb.check_please.person.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.margeb.check_please.person.domain.model.Person;
@@ -9,14 +10,13 @@ import java.util.List;
 import java.util.UUID;
 
 @RequestMapping("api/v1/groups/{group-id}/people")
+@AllArgsConstructor
 @RestController
 public class PersonApiController {
 
     private final PersonService personService;
 
-    public PersonApiController(PersonService personService) {
-        this.personService = personService;
-    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     Person createPerson(@PathVariable("group-id") UUID groupId, @RequestBody Person person){
@@ -35,7 +35,9 @@ public class PersonApiController {
 
     @PutMapping("{person-id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    Person updatePerson(@PathVariable("group-id") UUID groupId, @PathVariable("person-id") UUID personId, @RequestBody Person person)
+    Person updatePerson(@PathVariable("group-id") UUID groupId,
+                        @PathVariable("person-id") UUID personId,
+                        @RequestBody Person person)
     {
         return personService.updatePerson(personId, person);
     }
