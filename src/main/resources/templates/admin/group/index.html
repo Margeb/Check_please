@@ -5,9 +5,6 @@
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
 
-
-  <th:block th:replace="~{admin/template :: navbar}" />
-
   <th:block th:replace="~{admin/template :: sidebar}" />
 
   <!-- Content Wrapper. Contains page content -->
@@ -15,17 +12,6 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Starter Page</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Starter Page</li>
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
@@ -37,31 +23,39 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Groups</h3>
+                <h3 class="card-title" th:text="'Groups [count: ' + ${groupsPage.totalElements} + ${#strings.isEmpty(search) ? '' : ', search: ' + search} + ']'">Groups</h3>
 
-                <div class="card-tools">
-                  <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
-                    <div class="input-group-append">
-                      <button type="submit" class="btn btn-default">
-                        <i class="fas fa-search"></i>
-                      </button>
+                    <div class="card-tools">
+                      <form>
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                          <input th:value="${search}" type="text" name="s" class="form-control float-right" placeholder="Search">
+
+                          <div class="input-group-append">
+                            <button type="submit" class="btn btn-default">
+                              <i class="fas fa-search"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </form>
                     </div>
-                  </div>
-                </div>
+
+
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
                   <thead>
                   <tr>
-                    <th>Name</th>
+                    <th>#</th>
+                    <th><a th:class="'sort-'+${reverseSort}"
+                            th:href="@{'/admin/groups'(s=${search}, field='name', direction=${reverseSort})}">Name</a></th>
                     <th>#</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr th:each="group : ${groups}">
+                  <tr th:each="group, it : ${groupsPage.content}">
+                    <td th:text="${it.index} + 1"></td>
                     <td th:text="${group.name}">Default group name</td>
                     <td>
 
@@ -79,6 +73,21 @@
                   </tr>
                   </tbody>
                 </table>
+
+                <div class="card-footer clearfix">
+                  <ul class="pagination pagination-sm m-0 float-right"
+                      th:if="${groupsPage.totalPages > 0}">
+                    <li th:each="pageNumber : ${pageNumbers}" class="page-item">
+                      <a class="page-link"
+                         th:href="@{'/admin/groups' (size=${groupsPage.size}, page=${pageNumber}-1)}"
+                         th:text="${pageNumber}"></a>
+                    </li>
+                  </ul>
+                </div>
+
+
+
+
               </div>
               <!-- /.card-body -->
             </div>

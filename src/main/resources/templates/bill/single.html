@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"><head th:replace="~{template :: head(title = 'Check, please - ' + ${bill.name})}" />
+    <body>
+        <th:block th:replace="~{template :: header}" />
+
+        <main>
+
+            <section class="py-5 text-center container">
+                <div class="row py-lg-5">
+                    <div class="col-lg-6 col-md-8 mx-auto">
+                        <a class="groupIndexButton" th:href="@{'/groups/' + ${groupId}}">←Back</a>
+                        <h1 class="fw-light" th:text="${bill.name}">Default bill name</h1>
+                    </div>
+                </div>
+            </section>
+
+                <table style="margin-left: auto; margin-right: auto">
+                    <tr>
+                        <td style="vertical-align: top">
+
+                            <table class="steelBlueCols">
+                                <thead>
+                                <tr>
+                                    <th colspan="2">Bill operations</th>
+                                    <th><a th:href="@{'./' + ${bill.id} + '/operations/add'}" class="addBillPersonButton">Add</a></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Person's ID</td>
+                                    <td>+</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr th:each="billOperation : ${billOperations}">
+                                    <td th:text="${billOperation.personId}">Default Person</td>
+                                    <td th:text="${billOperation.deposit}">Default Person's deposit</td>
+                                    <td th:text="${billOperation.cost}">Default Person's cost</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </td>
+                    </tr>
+
+                </table>
+
+
+        </main>
+
+        <th:block th:replace="~{template :: footer}" />
+    </body>
+</html>

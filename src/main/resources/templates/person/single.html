@@ -8,8 +8,8 @@
             <section class="py-5 text-center container">
                 <div class="row py-lg-5">
                     <div class="col-lg-6 col-md-8 mx-auto">
-                        <a class="groupIndexButton" th:href="@{/groups}">←Back</a>
                         <h1 class="fw-light" th:text="${group.name}">Default group name</h1>
+                        <p class="lead text-muted" th:text="${group.id}">Default group ID</p>
                     </div>
                 </div>
             </section>
@@ -21,15 +21,10 @@
                             <table class="steelBlueCols">
                                 <thead>
                                 <tr>
-                                    <th>Bills</th>
-                                    <th><a th:href="@{${group.id} + '/bills/add'}" class="addBillPersonButton">Add</a></th>
+                                    <th colspan="2">Bills</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>Date</td>
-                                    <td>Name</td>
-                                </tr>
                                 <tr th:each="bill : ${bills}">
                                     <td th:text="${bill.date}">Bill date</td>
                                     <td><a class="bill-links" th:text="${bill.name}" th:href="@{${group.id} + '/bills/' + ${bill.id}}">Bill name</a></td>
@@ -43,15 +38,10 @@
                             <table class="steelBlueCols">
                                 <thead>
                                 <tr>
-                                    <th>Person</th>
-                                    <th><a th:href="@{${group.id} + '/people/add'}" class="addBillPersonButton">Add</a></th>
+                                    <th colspan="2">Person</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Balance</td>
-                                </tr>
                                 <tr th:each="person : ${people}">
                                     <td th:text="${person.name}">Person name</td>
                                     <td th:text="${person.balance}">Person balance</td>

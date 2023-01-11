@@ -1,4 +1,4 @@
-package pl.margeb.check_please.group.controller;
+package pl.margeb.check_please.person.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -8,71 +8,64 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pl.margeb.check_please.bill.service.BillService;
 import pl.margeb.check_please.common.dto.Message;
-import pl.margeb.check_please.group.domain.model.Group;
 import pl.margeb.check_please.group.service.GroupService;
+import pl.margeb.check_please.person.domain.model.Person;
 import pl.margeb.check_please.person.service.PersonService;
 
 import java.util.UUID;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/groups")
-public class GroupViewController {
+@RequestMapping("/groups/{group-id}/people")
+public class PersonViewController {
 
     private final GroupService groupService;
-    private final BillService billService;
-
     private final PersonService personService;
 
 
+
     @GetMapping
-    public String indexView(Model model){
+    public String indexView(Model model, @PathVariable("group-id")UUID groupId){
         model.addAttribute("groups", groupService.getGroups(Pageable.unpaged()));
 
         return "group/index";
     }
 
-    @GetMapping("{id}")
-    public String singleView(Model model, @PathVariable UUID id){
-        model.addAttribute("group", groupService.getGroup(id));
-        model.addAttribute("bills", billService.getBills(id));
-        model.addAttribute("people", personService.getAllPeople(id));
-
-        return "group/single";
-    }
-
     @GetMapping("add")
-    public String addView(Model model){
-        model.addAttribute("group", new Group());
-        return "group/add";
+    public String addView(Model model, @PathVariable("group-id") UUID groupId){
+        model.addAttribute("person", new Person());
+        model.addAttribute("group", groupService.getGroup(groupId));
+        return "person/add";
     }
 
     @PostMapping
-    public String add(@Valid @ModelAttribute("group") Group group,
+    public String add(@PathVariable("group-id") UUID groupId,
+                      @Valid @ModelAttribute("person") Person person,
                       BindingResult bindingResult,
                       RedirectAttributes ra,
                       Model model){
 
         if(bindingResult.hasErrors()){
-            model.addAttribute("group", group);
+            model.addAttribute("person", person);
             model.addAttribute("message", Message.error("Saving error"));
-            return "group/add";
+            model.addAttribute("group", groupService.getGroup(groupId));
+            return "person/add";
         }
 
         try{
-            groupService.createGroup(group);
-            ra.addFlashAttribute("message", Message.info("Group created"));
+            personService.createPerson(groupId, person);
+            ra.addFlashAttribute("message", Message.info("Person created"));
 
         } catch (Exception e){
-            model.addAttribute("group", group);
+            model.addAttribute("person", person);
             model.addAttribute("message", Message.error("Unknown creating error"));
-            return "group/add";
+            model.addAttribute("group", groupService.getGroup(groupId));
+            return "person/add";
         }
 
 
 
-        return "redirect:/groups";
+        return "redirect:/groups/{group-id}";
     }
 }

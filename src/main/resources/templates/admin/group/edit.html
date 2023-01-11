@@ -6,29 +6,10 @@
 <div class="wrapper">
 
 
-  <th:block th:replace="~{admin/template :: navbar}" />
-
   <th:block th:replace="~{admin/template :: sidebar}" />
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Starter Page</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Starter Page</li>
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
 
     <!-- Main content -->
     <div class="content">
@@ -60,9 +41,16 @@
                 <!-- /.card-header -->
                 <!-- form start -->
                 <form method="post" th:object="${group}">
+                  <div class="error" th:if="${#fields.hasAnyErrors()}">
+                    <ul>
+                      <li th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+                    </ul>
+
+                  </div>
                   <div class="card-body">
                     <div class="form-group">
-                      <label for="groupName">Name</label>
+                      <label for="groupName">Name</label><br />
+                      <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</span>
                       <input th:field="*{name}" type="text" class="form-control" id="groupName" placeholder="Group name">
                       <input th:field="*{id}" type="hidden" />
                     </div>
