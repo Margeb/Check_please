@@ -3,7 +3,7 @@ package pl.margeb.check_please.bill.domain.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import pl.margeb.check_please.group.domain.model.Group;
 
@@ -13,7 +13,9 @@ import java.util.Set;
 import java.util.UUID;
 @Entity
 @Table(name = "bills")
-@Data
+@Getter
+@Setter
+@ToString
 public class Bill {
 
     @Id
