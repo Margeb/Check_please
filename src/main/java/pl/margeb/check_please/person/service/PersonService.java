@@ -49,7 +49,7 @@ public class PersonService {
 
     @Transactional
     public Person updatePerson(UUID personId, Person personRequest) {
-        Person person = new Person();
+        Person person = personRepository.getById(personId);
 
         person.setName(personRequest.getName());
 

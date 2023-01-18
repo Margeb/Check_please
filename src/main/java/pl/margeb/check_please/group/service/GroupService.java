@@ -14,8 +14,6 @@ import pl.margeb.check_please.group.domain.repository.GroupRepository;
 import pl.margeb.check_please.person.domain.model.Person;
 import pl.margeb.check_please.person.service.PersonService;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -70,9 +68,6 @@ public class GroupService {
     @Transactional
     public void deleteGroup(UUID id) {
         for(Bill bill : billService.getBills(id)){
-            for(BillOperation billOperation : billOperationService.getBillOperations(bill.getId())){
-                billOperationService.deleteBillOperation(billOperation.getId());
-            }
             billService.deleteBill(bill.getId());
         }
 
@@ -81,5 +76,11 @@ public class GroupService {
         }
 
         groupRepository.deleteById(id);
+    }
+
+    public void deleteAllGroups(){
+        for(Group group : this.getGroups(Pageable.unpaged())){
+            deleteGroup(group.getId());
+        }
     }
 }

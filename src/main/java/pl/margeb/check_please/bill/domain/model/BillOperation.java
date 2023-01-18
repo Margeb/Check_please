@@ -33,4 +33,12 @@ public class BillOperation {
     public BillOperation() {
         this.id = UUID.randomUUID();
     }
+
+    public BillOperation(Bill bill, UUID personId, BigDecimal deposit, BigDecimal cost) {
+        this();
+        this.bill = bill;
+        this.personId = personId;
+        this.deposit = deposit;
+        this.cost = cost;
+    }
 }
