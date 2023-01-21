@@ -45,6 +45,6 @@ public class PersonApiController {
     @DeleteMapping("{person-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deletePerson(@PathVariable("group-id") UUID groupId, @PathVariable("person-id") UUID personId){
-        personService.deletePerson(personId);
+        personService.deletePerson(groupId, personId);
     }
 }

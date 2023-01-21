@@ -4,7 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+import pl.margeb.check_please.CheckPleaseApplication;
 import pl.margeb.check_please.group.domain.model.Group;
 import pl.margeb.check_please.group.service.GroupService;
 import pl.margeb.check_please.person.domain.model.Person;
@@ -15,7 +17,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
+@ContextConfiguration(classes = CheckPleaseApplication.class)
 class PersonServiceIT {
 
     @Autowired
@@ -45,7 +47,7 @@ class PersonServiceIT {
         //then
 
         assertThat(result.getName()).isEqualTo(person.getName());
-        assertThat(result.getGroup().getId()).isEqualTo(group.getId());
+        assertThat(result.getGroupId()).isEqualTo(group.getId());
 
 
     }
@@ -125,7 +127,7 @@ class PersonServiceIT {
 
         //when
 
-        personService.deletePerson(person.getId());
+        personService.deletePerson(group.getId(), person.getId());
 
         //then
 

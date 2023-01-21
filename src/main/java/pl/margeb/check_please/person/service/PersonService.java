@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.margeb.check_please.group.domain.model.Group;
 import pl.margeb.check_please.group.domain.repository.GroupRepository;
+import pl.margeb.check_please.group.service.GroupService;
 import pl.margeb.check_please.person.domain.model.Person;
 import pl.margeb.check_please.person.domain.repository.PersonRepository;
 
@@ -18,6 +19,7 @@ public class PersonService {
     private final PersonRepository personRepository;
 
     private final GroupRepository groupRepository;
+
 
 
     @Transactional
@@ -57,7 +59,11 @@ public class PersonService {
     }
 
     @Transactional
-    public void deletePerson(UUID personId) {
+    public void deletePerson(UUID groupId, UUID personId) {
+        Group group = groupRepository.getById(groupId);
+        Person person = personRepository.getById(personId);
+//        group.getPeople().remove(person);
+        group.deletePerson(person);
         personRepository.deleteById(personId);
     }
 }

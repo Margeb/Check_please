@@ -28,7 +28,7 @@ public class BillService {
 
         Group group = groupRepository.getById(groupId);
 
-        bill.setGroup(group);
+        bill.setGroupId(group.getId());
 
         group.addBill(bill);
 
@@ -59,10 +59,13 @@ public class BillService {
     }
 
     @Transactional
-    public void deleteBill(UUID billId) {
+    public void deleteBill(UUID groupId, UUID billId) {
         for(BillOperation billOperation : billOperationService.getBillOperations(billId)){
-            billOperationService.deleteBillOperation(billOperation.getId());
+            billOperationService.deleteBillOperation(groupId, billOperation.getId());
         }
+        Bill bill = billRepository.getById(billId);
+        Group group = groupRepository.getById(groupId);
+        group.deleteBill(bill);
         billRepository.deleteById(billId);
     }
 }

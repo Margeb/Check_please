@@ -4,7 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+import pl.margeb.check_please.CheckPleaseApplication;
 import pl.margeb.check_please.bill.domain.model.Bill;
 import pl.margeb.check_please.bill.domain.model.BillOperation;
 import pl.margeb.check_please.group.domain.model.Group;
@@ -19,6 +21,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
+@ContextConfiguration(classes = CheckPleaseApplication.class)
 @Transactional
 class BillOperationIT {
 
@@ -48,7 +51,7 @@ class BillOperationIT {
         Group group = groupService.createGroup(new Group("Group 1"));
         Bill bill = billService.createBill(group.getId(), new Bill("Bill 1"));
         Person person = personService.createPerson(group.getId(), new Person("Person 1"));
-        BillOperation billOperation = new BillOperation(bill, person.getId(), BigDecimal.ZERO, BigDecimal.TEN);
+        BillOperation billOperation = new BillOperation(bill.getId(), person.getId(), BigDecimal.ZERO, BigDecimal.TEN);
 
         //when
 
@@ -67,7 +70,7 @@ class BillOperationIT {
             Group group = groupService.createGroup(new Group("Group 1"));
             Bill bill = billService.createBill(group.getId(), new Bill("Bill 1"));
             Person person = personService.createPerson(group.getId(), new Person("Person 1"));
-            BillOperation billOperation = billOperationService.createBillOperation(bill.getId(), new BillOperation(bill, person.getId(), BigDecimal.ZERO, BigDecimal.TEN));
+            BillOperation billOperation = billOperationService.createBillOperation(bill.getId(), new BillOperation(bill.getId(), person.getId(), BigDecimal.ZERO, BigDecimal.TEN));
 
         //when
 
@@ -93,7 +96,7 @@ class BillOperationIT {
             ));
 
             for(Person person : people){
-                BillOperation billOperationRequest = new BillOperation(bill, person.getId(), BigDecimal.ONE, BigDecimal.TEN);
+                BillOperation billOperationRequest = new BillOperation(bill.getId(), person.getId(), BigDecimal.ONE, BigDecimal.TEN);
                 billOperationService.createBillOperation(bill.getId(), billOperationRequest);
             }
 
@@ -117,7 +120,7 @@ class BillOperationIT {
         Group group = groupService.createGroup(new Group("Group 1"));
         Bill bill = billService.createBill(group.getId(), new Bill("Bill 1"));
         Person person = personService.createPerson(group.getId(), new Person("Person 1"));
-        BillOperation billOperation = billOperationService.createBillOperation(bill.getId(), new BillOperation(bill, person.getId(), BigDecimal.ZERO, BigDecimal.TEN));
+        BillOperation billOperation = billOperationService.createBillOperation(bill.getId(), new BillOperation(bill.getId(), person.getId(), BigDecimal.ZERO, BigDecimal.TEN));
         BillOperation billOperationRequest = new BillOperation();
         billOperationRequest.setDeposit(BigDecimal.TEN);
         billOperationRequest.setCost(BigDecimal.TWO);
@@ -141,11 +144,11 @@ class BillOperationIT {
         Group group = groupService.createGroup(new Group("Group 1"));
         Bill bill = billService.createBill(group.getId(), new Bill("Bill 1"));
         Person person = personService.createPerson(group.getId(), new Person("Person 1"));
-        BillOperation billOperation = billOperationService.createBillOperation(bill.getId(), new BillOperation(bill, person.getId(), BigDecimal.ZERO, BigDecimal.TEN));
+        BillOperation billOperation = billOperationService.createBillOperation(bill.getId(), new BillOperation(bill.getId(), person.getId(), BigDecimal.ZERO, BigDecimal.TEN));
 
         //when
 
-        billOperationService.deleteBillOperation(billOperation.getId());
+        billOperationService.deleteBillOperation(group.getId(), billOperation.getId());
 
         //then
 

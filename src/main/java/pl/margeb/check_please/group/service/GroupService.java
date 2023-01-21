@@ -23,7 +23,6 @@ public class GroupService {
     private final GroupRepository groupRepository;
     private final PersonService personService;
     private final BillService billService;
-    private final BillOperationService billOperationService;
 
 
     @Transactional(readOnly = true)
@@ -68,16 +67,17 @@ public class GroupService {
     @Transactional
     public void deleteGroup(UUID id) {
         for(Bill bill : billService.getBills(id)){
-            billService.deleteBill(bill.getId());
+            billService.deleteBill(id, bill.getId());
         }
 
         for(Person person : personService.getAllPeople(id)){
-            personService.deletePerson(person.getId());
+            personService.deletePerson(id, person.getId());
         }
 
         groupRepository.deleteById(id);
     }
 
+    @Transactional
     public void deleteAllGroups(){
         for(Group group : this.getGroups(Pageable.unpaged())){
             deleteGroup(group.getId());

@@ -49,6 +49,6 @@ public class BillOperationApiController {
     void deleteBillOperation(@PathVariable("group-id")UUID groupId,
                              @PathVariable("bill-id")UUID billId,
                              @PathVariable("billOperation-id") UUID billOperationId){
-        billOperationService.deleteBillOperation(billOperationId);
+        billOperationService.deleteBillOperation(groupId, billOperationId);
     }
 }

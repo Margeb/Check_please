@@ -2,6 +2,7 @@ package pl.margeb.check_please.person.domain.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
@@ -19,7 +20,6 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@ToString
 @Table(name = "people")
 public class Person {
 
@@ -35,8 +35,7 @@ public class Person {
     @OneToMany
     private Set<BillOperation> billOperations;
 
-    @ManyToOne
-    private Group group;
+    private UUID groupId;
 
     public Person() {
         this.id = UUID.randomUUID();

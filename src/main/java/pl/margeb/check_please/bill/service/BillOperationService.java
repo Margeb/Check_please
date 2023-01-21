@@ -14,8 +14,6 @@ import pl.margeb.check_please.person.service.PersonService;
 import java.util.List;
 import java.util.UUID;
 
-import static pl.margeb.check_please.bill.domain.model.BillOperation.*;
-
 @Service
 @AllArgsConstructor
 public class BillOperationService {
@@ -33,7 +31,7 @@ public class BillOperationService {
         Bill bill = billRepository.getById(billId);
 
         billOperation.setId(billOperationRequest.getId());
-        billOperation.setBill(bill);
+        billOperation.setBillId(bill.getId());
         billOperation.setPersonId(billOperationRequest.getPersonId());
         billOperation.setDeposit(billOperationRequest.getDeposit());
         billOperation.setCost(billOperationRequest.getCost());
@@ -75,9 +73,11 @@ public class BillOperationService {
     }
 
     @Transactional
-    public void deleteBillOperation(UUID billOperationId) {
+    public void deleteBillOperation(UUID groupId, UUID billOperationId) {
         BillOperation billOperation = billOperationRepository.getById(billOperationId);
-        personService.deletePerson(billOperation.getPersonId());
+        personService.deletePerson(groupId, billOperation.getPersonId());
+        Bill bill = billRepository.getById(billOperation.getBillId());
+        bill.deleteBillOperation(billOperation);
         billOperationRepository.deleteById(billOperationId);
     }
 
