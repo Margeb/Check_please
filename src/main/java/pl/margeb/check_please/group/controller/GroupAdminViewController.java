@@ -2,6 +2,7 @@ package pl.margeb.check_please.group.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ import java.util.stream.IntStream;
 
 @Controller
 @AllArgsConstructor
+@Slf4j
 @RequestMapping("/admin/groups")
 public class GroupAdminViewController {
 
@@ -69,6 +71,7 @@ public class GroupAdminViewController {
                         Model model
                         ){
         if(bindingResult.hasErrors()){
+            log.error("Error while editing Group:" + bindingResult.getAllErrors());
 
             model.addAttribute("group", group);
             model.addAttribute("message", Message.error("Saving error"));
@@ -78,7 +81,11 @@ public class GroupAdminViewController {
         try {
             groupService.updateGroup(id,group);
             ra.addFlashAttribute("message", Message.info("Group saved"));
+            log.info("Group saved: " + group.getName());
+
         } catch(Exception e){
+            log.error("Unknown error while editing Group:" + e);
+
             model.addAttribute("group", groupService.getGroup(id));
             model.addAttribute("message", Message.error("Unknown saving error"));
             return "admin/group/edit";
@@ -90,8 +97,17 @@ public class GroupAdminViewController {
 
     @GetMapping("{id}/delete")
     public String deleteView(@PathVariable UUID id, RedirectAttributes ra){
-        groupService.deleteGroup(id);
-        ra.addFlashAttribute("message", Message.info("Group deleted"));
+        try{
+            groupService.deleteGroup(id);
+            ra.addFlashAttribute("message", Message.info("Group deleted"));
+            log.info("Group deleted");
+
+        } catch (Exception e){
+            log.error("Unknown error while deleting Group: " + e);
+            ra.addFlashAttribute("message", Message.error("Unknown error while deleting Group"));
+        }
+
+
         return "redirect:/admin/groups";
     }
 

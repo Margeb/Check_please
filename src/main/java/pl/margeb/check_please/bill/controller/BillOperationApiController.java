@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.margeb.check_please.bill.domain.model.BillOperation;
 import pl.margeb.check_please.bill.service.BillOperationService;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 

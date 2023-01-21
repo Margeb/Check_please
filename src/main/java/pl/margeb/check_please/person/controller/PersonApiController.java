@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.margeb.check_please.person.domain.model.Person;
+import pl.margeb.check_please.person.dto.PersonDto;
 import pl.margeb.check_please.person.service.PersonService;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class PersonApiController {
     }
 
     @GetMapping
-    List<Person> getAllPeople(@PathVariable("group-id") UUID groupId){
+    List<PersonDto> getAllPeople(@PathVariable("group-id") UUID groupId){
         return personService.getAllPeople(groupId);
     }
 

@@ -2,15 +2,11 @@ package pl.margeb.check_please.person.domain.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.springframework.format.annotation.NumberFormat;
 import pl.margeb.check_please.bill.domain.model.BillOperation;
-import pl.margeb.check_please.group.domain.model.Group;
 
 import java.math.BigDecimal;
 import java.util.HashSet;

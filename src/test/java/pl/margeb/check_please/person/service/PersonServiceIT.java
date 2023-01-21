@@ -11,6 +11,7 @@ import pl.margeb.check_please.group.domain.model.Group;
 import pl.margeb.check_please.group.service.GroupService;
 import pl.margeb.check_please.person.domain.model.Person;
 import pl.margeb.check_please.person.domain.repository.PersonRepository;
+import pl.margeb.check_please.person.dto.PersonDto;
 
 import java.util.List;
 
@@ -85,13 +86,13 @@ class PersonServiceIT {
 
         //when
 
-        List<Person> people = personService.getAllPeople(group.getId());
+        List<PersonDto> people = personService.getAllPeople(group.getId());
 
         //then
 
         assertThat(people)
                 .hasSize(3)
-                .extracting(Person::getName)
+                .extracting(PersonDto::getName)
                 .containsExactlyInAnyOrder("Person 1", "Person 2", "Person 3");
 
     }

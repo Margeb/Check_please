@@ -5,12 +5,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.margeb.check_please.group.domain.model.Group;
 import pl.margeb.check_please.group.domain.repository.GroupRepository;
-import pl.margeb.check_please.group.service.GroupService;
 import pl.margeb.check_please.person.domain.model.Person;
 import pl.margeb.check_please.person.domain.repository.PersonRepository;
+import pl.margeb.check_please.person.dto.PersonDto;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -20,6 +21,7 @@ public class PersonService {
 
     private final GroupRepository groupRepository;
 
+    private final PersonMapper personMapper;
 
 
     @Transactional
@@ -38,9 +40,9 @@ public class PersonService {
     }
 
     @Transactional(readOnly = true)
-    public List<Person> getAllPeople(UUID groupId) {
+    public List<PersonDto> getAllPeople(UUID groupId) {
 
-        return personRepository.findByGroupId(groupId);
+        return personRepository.findByGroupId(groupId).stream().map(personMapper::map).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -62,7 +64,6 @@ public class PersonService {
     public void deletePerson(UUID groupId, UUID personId) {
         Group group = groupRepository.getById(groupId);
         Person person = personRepository.getById(personId);
-//        group.getPeople().remove(person);
         group.deletePerson(person);
         personRepository.deleteById(personId);
     }

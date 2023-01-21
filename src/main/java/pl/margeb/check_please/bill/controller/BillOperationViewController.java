@@ -2,12 +2,12 @@ package pl.margeb.check_please.bill.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pl.margeb.check_please.bill.domain.model.Bill;
 import pl.margeb.check_please.bill.domain.model.BillOperation;
 import pl.margeb.check_please.bill.service.BillOperationService;
 import pl.margeb.check_please.bill.service.BillService;
@@ -15,11 +15,11 @@ import pl.margeb.check_please.common.dto.Message;
 import pl.margeb.check_please.group.service.GroupService;
 import pl.margeb.check_please.person.service.PersonService;
 
-import java.util.HashSet;
 import java.util.UUID;
 
 @Controller
 @AllArgsConstructor
+@Slf4j
 @RequestMapping("/groups/{group-id}/bills/{bill-id}/operations")
 public class BillOperationViewController {
 
@@ -51,6 +51,8 @@ public class BillOperationViewController {
                       Model model){
 
         if(bindingResult.hasErrors()){
+            log.error("Error adding BillOperation: " + bindingResult.getAllErrors());
+
             model.addAttribute("billOperation", billOperation);
             model.addAttribute("message", Message.error("Saving error"));
             model.addAttribute("group", groupService.getGroup(groupId));
@@ -64,7 +66,11 @@ public class BillOperationViewController {
             billOperationService.createBillOperation(billId, billOperation);
             ra.addFlashAttribute("message", Message.info("Bill operation created"));
 
+            log.info("BillOperation created for Bill: " + billService.getBill(billId).getName() + " ,Person: " + personService.getPerson(billOperation.getPersonId()).getName());
+
         } catch (Exception e){
+            log.error("Unknown error while creating BillOperation: " + e);
+
             model.addAttribute("billOperation", billOperation);
             model.addAttribute("message", Message.error("Unknown creating error"));
             model.addAttribute("group", groupService.getGroup(groupId));

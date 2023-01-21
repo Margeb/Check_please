@@ -2,6 +2,7 @@ package pl.margeb.check_please.group.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,12 +19,12 @@ import java.util.UUID;
 
 @Controller
 @AllArgsConstructor
+@Slf4j
 @RequestMapping("/groups")
 public class GroupViewController {
 
     private final GroupService groupService;
     private final BillService billService;
-
     private final PersonService personService;
 
 
@@ -56,6 +57,8 @@ public class GroupViewController {
                       Model model){
 
         if(bindingResult.hasErrors()){
+            log.error("Error while creating Group: " + bindingResult.getAllErrors());
+
             model.addAttribute("group", group);
             model.addAttribute("message", Message.error("Saving error"));
             return "group/add";
@@ -64,8 +67,11 @@ public class GroupViewController {
         try{
             groupService.createGroup(group);
             ra.addFlashAttribute("message", Message.info("Group created"));
+            log.info("Group created: " + group.getName());
 
         } catch (Exception e){
+            log.error("Unknown error while creating Group:" + e);
+
             model.addAttribute("group", group);
             model.addAttribute("message", Message.error("Unknown creating error"));
             return "group/add";

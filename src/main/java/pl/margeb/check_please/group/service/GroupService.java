@@ -6,12 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.margeb.check_please.bill.domain.model.Bill;
-import pl.margeb.check_please.bill.domain.model.BillOperation;
-import pl.margeb.check_please.bill.service.BillOperationService;
 import pl.margeb.check_please.bill.service.BillService;
 import pl.margeb.check_please.group.domain.model.Group;
 import pl.margeb.check_please.group.domain.repository.GroupRepository;
-import pl.margeb.check_please.person.domain.model.Person;
+import pl.margeb.check_please.person.dto.PersonDto;
 import pl.margeb.check_please.person.service.PersonService;
 
 import java.util.UUID;
@@ -70,7 +68,7 @@ public class GroupService {
             billService.deleteBill(id, bill.getId());
         }
 
-        for(Person person : personService.getAllPeople(id)){
+        for(PersonDto person : personService.getAllPeople(id)){
             personService.deletePerson(id, person.getId());
         }
 

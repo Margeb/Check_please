@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import pl.margeb.check_please.bill.domain.model.Bill;
 import pl.margeb.check_please.person.domain.model.Person;
 
