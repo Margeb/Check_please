@@ -2,10 +2,10 @@ package pl.margeb.check_please.bill.domain.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-import pl.margeb.check_please.group.domain.model.Group;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -15,7 +15,6 @@ import java.util.UUID;
 @Table(name = "bills")
 @Getter
 @Setter
-@ToString
 public class Bill {
 
     @Id
@@ -27,11 +26,10 @@ public class Bill {
     @DateTimeFormat
     private LocalDate date;
 
-    @OneToMany(mappedBy = "bill")
+    @OneToMany
     private Set<BillOperation> billOperations;
 
-    @ManyToOne
-    private Group group;
+    private UUID groupId;
 
     public Bill() {
         this.id = UUID.randomUUID();
@@ -50,5 +48,9 @@ public class Bill {
         }
 
         billOperations.add(billOperation);
+    }
+
+    public void deleteBillOperation(BillOperation billOperation){
+        billOperations.remove(billOperation);
     }
 }

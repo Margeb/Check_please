@@ -40,7 +40,7 @@ public class BillApiController {
 
     @DeleteMapping("{bill-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteBill(@PathVariable("bill-id")UUID billId){
-        billService.deleteBill(billId);
+    void deleteBill(@PathVariable("bill-id")UUID billId, @PathVariable("group-id")UUID groupId){
+        billService.deleteBill(groupId, billId);
     }
 }

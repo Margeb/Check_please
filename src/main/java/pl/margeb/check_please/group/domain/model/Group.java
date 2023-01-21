@@ -4,7 +4,8 @@ package pl.margeb.check_please.group.domain.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import pl.margeb.check_please.bill.domain.model.Bill;
 import pl.margeb.check_please.person.domain.model.Person;
 
@@ -13,7 +14,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "groups")
 public class Group {
 
@@ -24,20 +26,11 @@ public class Group {
     @Column(unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany
     private Set<Bill> bills;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany
     private Set<Person> people;
-
-
-    public Set<Bill> getBills() {
-        return Collections.unmodifiableSet(bills);
-    }
-
-    public Set<Person> getPeople() {
-        return Collections.unmodifiableSet(people);
-    }
 
     public Group() {
         this.id = UUID.randomUUID();
@@ -48,6 +41,14 @@ public class Group {
         this.name = name;
     }
 
+    public Set<Bill> getBills() {
+        return Collections.unmodifiableSet(bills);
+    }
+
+    public Set<Person> getPeople() {
+        return Collections.unmodifiableSet(people);
+    }
+
     public Group addBill(Bill bill)
     {
         if(bills == null)
@@ -55,7 +56,7 @@ public class Group {
             bills = new HashSet<>();
         }
 
-        bill.setGroup(this);
+        bill.setGroupId(this.getId());
         bills.add(bill);
 
         return this;
@@ -66,8 +67,16 @@ public class Group {
         if(people == null){
             people = new HashSet<>();
         }
-        person.setGroup(this);
+        person.setGroupId(this.getId());
 
         people.add(person);
+    }
+
+    public void deletePerson(Person person){
+        people.remove(person);
+    }
+
+    public void deleteBill(Bill bill){
+        bills.remove(bill);
     }
 }

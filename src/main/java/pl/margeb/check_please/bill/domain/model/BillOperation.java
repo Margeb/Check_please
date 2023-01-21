@@ -3,6 +3,9 @@ package pl.margeb.check_please.bill.domain.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.format.annotation.NumberFormat;
 
 import java.math.BigDecimal;
@@ -10,14 +13,15 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "bill_operations")
-@Data
+@Getter
+@Setter
 public class BillOperation {
 
     @Id
     private UUID id;
 
-    @ManyToOne
-    private Bill bill;
+    @NotNull
+    private UUID billId;
 
     @NotNull
     private UUID personId;
@@ -32,5 +36,13 @@ public class BillOperation {
 
     public BillOperation() {
         this.id = UUID.randomUUID();
+    }
+
+    public BillOperation(UUID billId, UUID personId, BigDecimal deposit, BigDecimal cost) {
+        this();
+        this.billId = billId;
+        this.personId = personId;
+        this.deposit = deposit;
+        this.cost = cost;
     }
 }

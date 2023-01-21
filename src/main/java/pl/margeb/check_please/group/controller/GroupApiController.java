@@ -33,13 +33,13 @@ public class GroupApiController {
         return groupService.createGroup(group);
     }
 
-    @PutMapping
+    @PutMapping("{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     Group updateGroup(@PathVariable UUID id, @RequestBody Group group){
         return groupService.updateGroup(id, group);
     }
 
-    @DeleteMapping
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteGroup(@PathVariable UUID id){
         groupService.deleteGroup(id);

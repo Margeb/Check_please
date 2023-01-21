@@ -1,9 +1,10 @@
 package pl.margeb.check_please.bill.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RestController;
 import pl.margeb.check_please.bill.domain.model.Bill;
+import pl.margeb.check_please.bill.domain.model.BillOperation;
 import pl.margeb.check_please.bill.domain.repository.BillRepository;
 import pl.margeb.check_please.group.domain.model.Group;
 import pl.margeb.check_please.group.domain.repository.GroupRepository;
@@ -11,12 +12,13 @@ import pl.margeb.check_please.group.domain.repository.GroupRepository;
 import java.util.List;
 import java.util.UUID;
 
-@RestController
+@Service
 @AllArgsConstructor
 public class BillService {
 
     private final BillRepository billRepository;
     private final GroupRepository groupRepository;
+    private final BillOperationService billOperationService;
 
 
     @Transactional
@@ -26,7 +28,7 @@ public class BillService {
 
         Group group = groupRepository.getById(groupId);
 
-        bill.setGroup(group);
+        bill.setGroupId(group.getId());
 
         group.addBill(bill);
 
@@ -57,7 +59,13 @@ public class BillService {
     }
 
     @Transactional
-    public void deleteBill(UUID billId) {
+    public void deleteBill(UUID groupId, UUID billId) {
+        for(BillOperation billOperation : billOperationService.getBillOperations(billId)){
+            billOperationService.deleteBillOperation(groupId, billOperation.getId());
+        }
+        Bill bill = billRepository.getById(billId);
+        Group group = groupRepository.getById(groupId);
+        group.deleteBill(bill);
         billRepository.deleteById(billId);
     }
 }

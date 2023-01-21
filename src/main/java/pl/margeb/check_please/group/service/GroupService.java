@@ -6,16 +6,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.margeb.check_please.bill.domain.model.Bill;
-import pl.margeb.check_please.bill.domain.model.BillOperation;
-import pl.margeb.check_please.bill.service.BillOperationService;
 import pl.margeb.check_please.bill.service.BillService;
 import pl.margeb.check_please.group.domain.model.Group;
 import pl.margeb.check_please.group.domain.repository.GroupRepository;
-import pl.margeb.check_please.person.domain.model.Person;
+import pl.margeb.check_please.person.dto.PersonDto;
 import pl.margeb.check_please.person.service.PersonService;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -25,7 +21,6 @@ public class GroupService {
     private final GroupRepository groupRepository;
     private final PersonService personService;
     private final BillService billService;
-    private final BillOperationService billOperationService;
 
 
     @Transactional(readOnly = true)
@@ -70,16 +65,20 @@ public class GroupService {
     @Transactional
     public void deleteGroup(UUID id) {
         for(Bill bill : billService.getBills(id)){
-            for(BillOperation billOperation : billOperationService.getBillOperations(bill.getId())){
-                billOperationService.deleteBillOperation(billOperation.getId());
-            }
-            billService.deleteBill(bill.getId());
+            billService.deleteBill(id, bill.getId());
         }
 
-        for(Person person : personService.getAllPeople(id)){
-            personService.deletePerson(person.getId());
+        for(PersonDto person : personService.getAllPeople(id)){
+            personService.deletePerson(id, person.getId());
         }
 
         groupRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteAllGroups(){
+        for(Group group : this.getGroups(Pageable.unpaged())){
+            deleteGroup(group.getId());
+        }
     }
 }

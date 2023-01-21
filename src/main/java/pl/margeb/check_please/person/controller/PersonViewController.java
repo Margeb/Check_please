@@ -2,6 +2,7 @@ package pl.margeb.check_please.person.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 @Controller
 @AllArgsConstructor
+@Slf4j
 @RequestMapping("/groups/{group-id}/people")
 public class PersonViewController {
 
@@ -47,6 +49,8 @@ public class PersonViewController {
                       Model model){
 
         if(bindingResult.hasErrors()){
+            log.error("Error saving Person: " + bindingResult.getAllErrors());
+
             model.addAttribute("person", person);
             model.addAttribute("message", Message.error("Saving error"));
             model.addAttribute("group", groupService.getGroup(groupId));
@@ -56,8 +60,11 @@ public class PersonViewController {
         try{
             personService.createPerson(groupId, person);
             ra.addFlashAttribute("message", Message.info("Person created"));
+            log.info("Person created: " + person.getName());
 
         } catch (Exception e){
+            log.error("Unknown error while creating Person: " + e);
+
             model.addAttribute("person", person);
             model.addAttribute("message", Message.error("Unknown creating error"));
             model.addAttribute("group", groupService.getGroup(groupId));
