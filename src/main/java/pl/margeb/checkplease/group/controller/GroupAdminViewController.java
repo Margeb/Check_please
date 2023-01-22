@@ -38,6 +38,7 @@ public class GroupAdminViewController {
                             @RequestParam(name = "size", required = false, defaultValue = "5") int size,
                             Model model
                             ){
+
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(direction), field);
 
         String reverseSort = null;
@@ -59,6 +60,7 @@ public class GroupAdminViewController {
     @GetMapping("{id}")
     public String editView(Model model, @PathVariable UUID id){
         model.addAttribute("group", groupService.getGroup(id));
+
         return "admin/group/edit";
     }
 
@@ -70,9 +72,9 @@ public class GroupAdminViewController {
                         RedirectAttributes ra,
                         Model model
                         ){
+
         if(bindingResult.hasErrors()){
             log.error("Error while editing Group:" + bindingResult.getAllErrors());
-
             model.addAttribute("group", group);
             model.addAttribute("message", Message.error("Saving error"));
             return "admin/group/edit";
@@ -85,7 +87,6 @@ public class GroupAdminViewController {
 
         } catch(Exception e){
             log.error("Unknown error while editing Group:" + e);
-
             model.addAttribute("group", groupService.getGroup(id));
             model.addAttribute("message", Message.error("Unknown saving error"));
             return "admin/group/edit";
@@ -105,6 +106,7 @@ public class GroupAdminViewController {
         } catch (Exception e){
             log.error("Unknown error while deleting Group: " + e);
             ra.addFlashAttribute("message", Message.error("Unknown error while deleting Group"));
+            return "redirect:/admin/groups";
         }
 
 

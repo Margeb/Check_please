@@ -21,6 +21,7 @@ public class Group {
 
     @Id
     private UUID id;
+
     @NotBlank(message = "{check.validation.name.NotBlank.message}")
     @Size(min = 3, max = 255)
     @Column(unique = true)
@@ -51,8 +52,7 @@ public class Group {
 
     public Group addBill(Bill bill)
     {
-        if(bills == null)
-        {
+        if(bills == null) {
             bills = new HashSet<>();
         }
 
@@ -67,8 +67,8 @@ public class Group {
         if(people == null){
             people = new HashSet<>();
         }
-        person.setGroupId(this.getId());
 
+        person.setGroupId(this.getId());
         people.add(person);
     }
 

@@ -22,8 +22,10 @@ class PersonServiceIT {
 
     @Autowired
     private PersonService personService;
+
     @Autowired
     private GroupService groupService;
+
     @Autowired
     private PersonRepository personRepository;
 
@@ -34,48 +36,34 @@ class PersonServiceIT {
 
     @Test
     void shouldCreatePerson() {
-
         //given
-
         Group group = groupService.createGroup(new Group("Group 1"));
         Person person = new Person("Person 1");
 
         //when
-
         Person result = personService.createPerson(group.getId(), person);
 
         //then
-
         assertThat(result.getName()).isEqualTo(person.getName());
         assertThat(result.getGroupId()).isEqualTo(group.getId());
-
-
     }
 
     @Test
     void shouldGetSinglePerson() {
-
         //given
         Group group = groupService.createGroup(new Group("Group 1"));
         Person person = personService.createPerson(group.getId(), new Person("Person 1"));
 
-
         //when
-
         Person result = personService.getPerson(person.getId());
 
         //then
-
         assertThat(result.getId()).isEqualTo(person.getId());
-
-
     }
 
     @Test
     void getAllPeopleFromSingleGroup() {
-
         //given
-
         Group group = groupService.createGroup(new Group("Group 1"));
         personRepository.saveAll(List.of(
                 personService.createPerson(group.getId(), new Person("Person 1")),
@@ -84,55 +72,41 @@ class PersonServiceIT {
                 ));
 
         //when
-
         List<PersonDto> people = personService.getAllPeople(group.getId());
 
         //then
-
         assertThat(people)
                 .hasSize(3)
                 .extracting(PersonDto::getName)
                 .containsExactlyInAnyOrder("Person 1", "Person 2", "Person 3");
-
     }
 
 
     @Test
     void shouldUpdatePerson() {
-
         //given
-
         Group group = groupService.createGroup(new Group("Group 1"));
         Person person = personService.createPerson(group.getId(), new Person("Person 1"));
         Person personRequest = new Person("Person 2");
 
         //when
-
         Person result = personService.updatePerson(person.getId(), personRequest);
 
         //then
-
         assertThat(result.getId()).isEqualTo(person.getId());
         assertThat(result.getName()).isEqualTo(personRequest.getName());
-
     }
 
     @Test
     void shouldDeletePerson() {
-
         //given
-
         Group group = groupService.createGroup(new Group("Group 1"));
         Person person = personService.createPerson(group.getId(), new Person("Person 1"));
 
         //when
-
         personService.deletePerson(group.getId(), person.getId());
 
         //then
-
         assertThat(person).isNotIn(personService.getAllPeople(group.getId()));
-
-
     }
 }

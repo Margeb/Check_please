@@ -30,7 +30,6 @@ public class PersonService {
         person.setName(personRequest.getName());
 
         Group group = groupRepository.getById(groupId);
-
         group.addPerson(person);
 
         personRepository.save(person);
@@ -41,20 +40,17 @@ public class PersonService {
 
     @Transactional(readOnly = true)
     public List<PersonDto> getAllPeople(UUID groupId) {
-
         return personRepository.findByGroupId(groupId).stream().map(personMapper::map).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public Person getPerson(UUID id) {
-
         return personRepository.getById(id);
     }
 
     @Transactional
     public Person updatePerson(UUID personId, Person personRequest) {
         Person person = personRepository.getById(personId);
-
         person.setName(personRequest.getName());
 
         return personRepository.save(person);

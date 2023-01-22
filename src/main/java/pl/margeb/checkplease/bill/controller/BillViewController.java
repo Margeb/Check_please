@@ -23,7 +23,9 @@ import java.util.UUID;
 public class BillViewController {
 
     private final GroupService groupService;
+
     private final BillService billService;
+
     private final BillOperationService billOperationService;
 
 
@@ -40,6 +42,7 @@ public class BillViewController {
     public String addView(Model model, @PathVariable("group-id") UUID groupId){
         model.addAttribute("bill", new Bill());
         model.addAttribute("group", groupService.getGroup(groupId));
+
         return "bill/add";
     }
 
@@ -52,7 +55,6 @@ public class BillViewController {
 
         if(bindingResult.hasErrors()){
             log.error("Error adding Bill: " + bindingResult.getAllErrors());
-
             model.addAttribute("bill", bill);
             model.addAttribute("message", Message.error("Saving error"));
             model.addAttribute("group", groupService.getGroup(groupId));
@@ -62,19 +64,15 @@ public class BillViewController {
         try{
             billService.createBill(groupId, bill);
             ra.addFlashAttribute("message", Message.info("Bill created"));
-
             log.info("Bill created: " + bill.getName());
 
         } catch (Exception e){
             log.error("Unknown error while creating Bill: " + e);
-
             model.addAttribute("bill", bill);
             model.addAttribute("message", Message.error("Unknown creating error"));
             model.addAttribute("group", groupService.getGroup(groupId));
             return "bill/add";
         }
-
-
 
         return "redirect:/groups/{group-id}";
     }

@@ -20,8 +20,10 @@ class BillServiceIT {
 
     @Autowired
     private GroupService groupService;
+
     @Autowired
     private BillService billService;
+
     @Autowired
     private BillRepository billRepository;
 
@@ -32,47 +34,35 @@ class BillServiceIT {
 
     @Test
     void shouldCreateBill() {
-
         //given
-
         Group group = groupService.createGroup(new Group("Group 1"));
         Bill bill = new Bill("Bill 1");
 
         //when
-
         Bill result = billService.createBill(group.getId(), bill);
 
         //then
-
         assertThat(result.getName()).isEqualTo(bill.getName());
         assertThat(result.getGroupId()).isEqualTo(group.getId());
-
     }
 
     @Test
     void shouldGetSingleBill() {
-
         //given
-
         Group group = groupService.createGroup(new Group("Group 1"));
         Bill bill = billService.createBill(group.getId(), new Bill("Bill 1"));
 
         //when
-
         Bill result = billService.getBill(bill.getId());
 
         //then
-
         assertThat(result.getName()).isEqualTo(bill.getName());
         assertThat(result.getId()).isEqualTo(bill.getId());
-
     }
 
     @Test
     void shouldGetAllBills() {
-
         //given
-
         Group group = groupService.createGroup(new Group("Group 1"));
         billRepository.saveAll(List.of(
                 billService.createBill(group.getId(), new Bill("Bill 1")),
@@ -81,53 +71,40 @@ class BillServiceIT {
                 ));
 
         //when
-
         List<Bill> bills = billService.getBills(group.getId());
 
         //then
-
         assertThat(bills)
                 .hasSize(3)
                 .extracting(Bill::getName)
                 .containsExactlyInAnyOrder("Bill 1", "Bill 2", "Bill 3");
-
     }
-
 
     @Test
     void shouldUpdateSingleBill() {
-
         //given
-
         Group group = groupService.createGroup(new Group("Group 1"));
         Bill bill = billService.createBill(group.getId(), new Bill("Bill 1"));
         Bill billRequest = new Bill("Bill 2");
 
         //when
-
         Bill result = billService.updateBill(bill.getId(), billRequest);
 
         //then
-
         assertThat(result.getName()).isEqualTo(billRequest.getName());
         assertThat(result.getId()).isEqualTo(bill.getId());
-
     }
 
     @Test
     void shouldDeleteSingleBill() {
-
         //given
-
         Group group = groupService.createGroup(new Group("Group 1"));
         Bill bill = billService.createBill(group.getId(), new Bill("Bill 1"));
 
         //when
-
         billService.deleteBill(group.getId(), bill.getId());
 
         //then
-
         assertThat(bill.getId()).isNotIn(billService.getBills(group.getId()));
     }
 }

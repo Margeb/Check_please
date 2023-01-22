@@ -20,6 +20,7 @@ class GroupServiceIT {
 
     @Autowired
     private GroupService groupService;
+
     @Autowired
     private GroupRepository groupRepository;
 
@@ -30,25 +31,19 @@ class GroupServiceIT {
 
     @Test
     void ShouldCreateGroup() {
-
         //given
-
         Group group = new Group("Group 1");
 
         //when
-
         Group result = groupService.createGroup(group);
 
         //then
-
         assertThat(result.getName()).isEqualTo(group.getName());
     }
 
     @Test
     void shouldGetSingleGroup() {
-
         //given
-
         Group group = new Group("Group 2");
 
         groupRepository.saveAll(List.of(
@@ -58,19 +53,15 @@ class GroupServiceIT {
         ));
 
         //when
-
         Group result = groupService.getGroup(group.getId());
 
         //then
-
         assertThat(result.getId()).isEqualTo(group.getId());
     }
 
     @Test
     void shouldGetAllGroups() {
-
         //given
-
         groupRepository.saveAll(List.of(
                 new Group("Group 1"),
                 new Group("Group 2"),
@@ -78,61 +69,45 @@ class GroupServiceIT {
         ));
 
         //when
-
         List<Group> groups = groupService.getGroups(Pageable.unpaged()).toList();
 
         //then
-
         assertThat(groups)
                 .hasSize(3)
                 .extracting(Group::getName)
                 .containsExactlyInAnyOrder("Group 1", "Group 2", "Group 3");
-
     }
 
     @Test
     void shouldUpdateGroup() {
-
         //given
-
         Group group = groupService.createGroup(new Group("Group 1"));
         Group groupRequest = new Group("Group 2");
 
-
         //when
-
-
         Group result = groupService.updateGroup(group.getId(), groupRequest);
 
         //then
-
         assertThat(result.getId()).isEqualTo(group.getId());
         assertThat(result.getName()).isEqualTo(groupRequest.getName());
     }
 
     @Test
     void shouldDeleteGroup() {
-
         //given
-
         Group group = groupService.createGroup(new Group("Group 1"));
 
         //when
-
         groupService.deleteGroup(group.getId());
         List<Group> groups = groupService.getGroups(Pageable.unpaged()).toList();
 
         //then
-
         assertThat(groupService.getGroup(group.getId())).isNotIn(groups);
     }
 
     @Test
     void shouldDeleteAllGroups() {
-
-
         //given
-
         groupRepository.saveAll(List.of(
                 new Group("Group 1"),
                 new Group("Group 2"),
@@ -142,15 +117,10 @@ class GroupServiceIT {
         List<Group> groups = groupService.getGroups(Pageable.unpaged()).toList();
 
         //when
-
         groupService.deleteAllGroups();
         List<Group> result = groupService.getGroups(Pageable.unpaged()).toList();
 
         //then
-
         assertThat(groups).extracting(Group::getName).isNotIn(result);
-
-
-
     }
 }

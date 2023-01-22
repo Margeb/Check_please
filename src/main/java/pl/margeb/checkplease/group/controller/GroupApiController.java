@@ -17,7 +17,6 @@ public class GroupApiController {
 
     private final GroupService groupService;
 
-
     @GetMapping
     Page<Group> getGroups(Pageable pageable){
         return groupService.getGroups(pageable);
@@ -27,6 +26,7 @@ public class GroupApiController {
     Group getGroup(@PathVariable UUID id){
         return groupService.getGroup(id);
     }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     Group createGroup(@RequestBody Group group){

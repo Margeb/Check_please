@@ -19,7 +19,9 @@ import java.util.UUID;
 public class GroupService {
 
     private final GroupRepository groupRepository;
+
     private final PersonService personService;
+
     private final BillService billService;
 
 
@@ -27,7 +29,6 @@ public class GroupService {
     public Page<Group> getGroups(Pageable pageable) {
         return getGroups(null, pageable);
     }
-
 
     @Transactional(readOnly = true)
     public Page<Group> getGroups(String search, Pageable pageable) {
@@ -47,7 +48,6 @@ public class GroupService {
     @Transactional
     public Group createGroup(Group groupRequest) {
         Group group = new Group();
-
         group.setName(groupRequest.getName());
 
         return groupRepository.save(group);
@@ -56,7 +56,6 @@ public class GroupService {
     @Transactional
     public Group updateGroup(UUID id, Group groupRequest) {
         Group group = groupRepository.getById(id);
-
         group.setName(groupRequest.getName());
 
         return groupRepository.save(group);

@@ -27,27 +27,27 @@ public class BillOperationApiController {
         return billOperationService.getBillOperations(billId);
     }
 
-    @GetMapping("{billOperation-id}")
+    @GetMapping("{bill-operation-id}")
     BillOperation getBillOperation(@PathVariable("group-id") UUID groupId,
-                          @PathVariable("bill-id")UUID billId,
-                          @PathVariable("billOperation-id") UUID billOperationId){
+                                   @PathVariable("bill-id")UUID billId,
+                                   @PathVariable("bill-operation-id") UUID billOperationId){
         return billOperationService.getBillOperation(billOperationId);
     }
 
-    @PutMapping("{billOperation-id}")
+    @PutMapping("{bill-operation-id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     BillOperation updateBillOperation(@PathVariable("group-id")UUID groupId,
-                             @PathVariable("bill-id")UUID billId,
-                             @PathVariable("billOperation-id") UUID billOperationId,
-                             @RequestBody BillOperation billOperation){
+                                      @PathVariable("bill-id")UUID billId,
+                                      @PathVariable("bill-operation-id") UUID billOperationId,
+                                      @RequestBody BillOperation billOperation){
         return billOperationService.updateBillOperation(billOperationId, billOperation);
     }
 
-    @DeleteMapping("{billOperation-id}")
+    @DeleteMapping("{bill-operation-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteBillOperation(@PathVariable("group-id")UUID groupId,
                              @PathVariable("bill-id")UUID billId,
-                             @PathVariable("billOperation-id") UUID billOperationId){
+                             @PathVariable("bill-operation-id") UUID billOperationId){
         billOperationService.deleteBillOperation(groupId, billOperationId);
     }
 }

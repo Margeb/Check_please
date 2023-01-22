@@ -18,10 +18,12 @@ public class Bill {
 
     @Id
     private UUID id;
+
     @NotBlank(message = "{check.validation.name.NotBlank.message}")
     @Size(min = 3, max = 255)
     @Column(unique = true)
     private String name;
+
     @DateTimeFormat
     private LocalDate date;
 
@@ -41,8 +43,7 @@ public class Bill {
     }
 
     public void addBillOperation(BillOperation billOperation) {
-        if(billOperations == null)
-        {
+        if(billOperations == null) {
             billOperations = new HashSet<>();
         }
 

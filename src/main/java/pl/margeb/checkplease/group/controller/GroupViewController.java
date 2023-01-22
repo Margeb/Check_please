@@ -24,7 +24,9 @@ import java.util.UUID;
 public class GroupViewController {
 
     private final GroupService groupService;
+
     private final BillService billService;
+
     private final PersonService personService;
 
 
@@ -47,6 +49,7 @@ public class GroupViewController {
     @GetMapping("add")
     public String addView(Model model){
         model.addAttribute("group", new Group());
+
         return "group/add";
     }
 
@@ -58,7 +61,6 @@ public class GroupViewController {
 
         if(bindingResult.hasErrors()){
             log.error("Error while creating Group: " + bindingResult.getAllErrors());
-
             model.addAttribute("group", group);
             model.addAttribute("message", Message.error("Saving error"));
             return "group/add";
@@ -71,13 +73,10 @@ public class GroupViewController {
 
         } catch (Exception e){
             log.error("Unknown error while creating Group:" + e);
-
             model.addAttribute("group", group);
             model.addAttribute("message", Message.error("Unknown creating error"));
             return "group/add";
         }
-
-
 
         return "redirect:/groups";
     }

@@ -17,7 +17,6 @@ public class PersonApiController {
 
     private final PersonService personService;
 
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     Person createPerson(@PathVariable("group-id") UUID groupId, @RequestBody Person person){

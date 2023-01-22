@@ -25,8 +25,6 @@ public class PersonViewController {
     private final GroupService groupService;
     private final PersonService personService;
 
-
-
     @GetMapping
     public String indexView(Model model, @PathVariable("group-id")UUID groupId){
         model.addAttribute("groups", groupService.getGroups(Pageable.unpaged()));
@@ -38,6 +36,7 @@ public class PersonViewController {
     public String addView(Model model, @PathVariable("group-id") UUID groupId){
         model.addAttribute("person", new Person());
         model.addAttribute("group", groupService.getGroup(groupId));
+
         return "person/add";
     }
 
@@ -50,7 +49,6 @@ public class PersonViewController {
 
         if(bindingResult.hasErrors()){
             log.error("Error saving Person: " + bindingResult.getAllErrors());
-
             model.addAttribute("person", person);
             model.addAttribute("message", Message.error("Saving error"));
             model.addAttribute("group", groupService.getGroup(groupId));
@@ -64,14 +62,11 @@ public class PersonViewController {
 
         } catch (Exception e){
             log.error("Unknown error while creating Person: " + e);
-
             model.addAttribute("person", person);
             model.addAttribute("message", Message.error("Unknown creating error"));
             model.addAttribute("group", groupService.getGroup(groupId));
             return "person/add";
         }
-
-
 
         return "redirect:/groups/{group-id}";
     }

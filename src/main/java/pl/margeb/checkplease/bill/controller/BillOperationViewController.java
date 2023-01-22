@@ -24,7 +24,9 @@ import java.util.UUID;
 public class BillOperationViewController {
 
     private final GroupService groupService;
+
     private final BillService billService;
+
     private final BillOperationService billOperationService;
 
     private final PersonService personService;
@@ -33,7 +35,6 @@ public class BillOperationViewController {
     public String addView(Model model,
                           @PathVariable("bill-id") UUID billId,
                           @PathVariable("group-id") UUID groupId){
-
         model.addAttribute("billOperation", new BillOperation());
         model.addAttribute("bill", billService.getBill(billId));
         model.addAttribute("people", personService.getAllPeople(groupId));
@@ -52,25 +53,22 @@ public class BillOperationViewController {
 
         if(bindingResult.hasErrors()){
             log.error("Error adding BillOperation: " + bindingResult.getAllErrors());
-
             model.addAttribute("billOperation", billOperation);
             model.addAttribute("message", Message.error("Saving error"));
             model.addAttribute("group", groupService.getGroup(groupId));
             model.addAttribute("bill", billService.getBill(billId));
             model.addAttribute("people", personService.getAllPeople(groupId));
+
             return "bill_operation/add";
         }
-
 
         try{
             billOperationService.createBillOperation(billId, billOperation);
             ra.addFlashAttribute("message", Message.info("Bill operation created"));
-
             log.info("BillOperation created for Bill: " + billService.getBill(billId).getName() + " ,Person: " + personService.getPerson(billOperation.getPersonId()).getName());
 
         } catch (Exception e){
             log.error("Unknown error while creating BillOperation: " + e);
-
             model.addAttribute("billOperation", billOperation);
             model.addAttribute("message", Message.error("Unknown creating error"));
             model.addAttribute("group", groupService.getGroup(groupId));

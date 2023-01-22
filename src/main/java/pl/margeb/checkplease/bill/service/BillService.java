@@ -17,7 +17,9 @@ import java.util.UUID;
 public class BillService {
 
     private final BillRepository billRepository;
+
     private final GroupRepository groupRepository;
+
     private final BillOperationService billOperationService;
 
 
@@ -27,9 +29,7 @@ public class BillService {
         bill.setName(billRequest.getName());
 
         Group group = groupRepository.getById(groupId);
-
         bill.setGroupId(group.getId());
-
         group.addBill(bill);
 
         billRepository.save(bill);
@@ -40,13 +40,11 @@ public class BillService {
 
     @Transactional(readOnly = true)
     public List<Bill> getBills(UUID groupId) {
-
         return billRepository.findByGroupId(groupId);
     }
 
     @Transactional(readOnly = true)
     public Bill getBill(UUID id) {
-
         return billRepository.getById(id);
     }
 

@@ -19,8 +19,11 @@ import java.util.UUID;
 public class BillOperationService {
 
     private final BillOperationRepository billOperationRepository;
+
     private final BillRepository billRepository;
+
     private final PersonRepository personRepository;
+
     private final PersonService personService;
 
 
@@ -46,19 +49,16 @@ public class BillOperationService {
         personRepository.save(person);
         billRepository.save(bill);
 
-
         return billOperation;
     }
 
     @Transactional(readOnly = true)
     public List<BillOperation> getBillOperations(UUID billId) {
-
         return billOperationRepository.findByBillId(billId);
     }
 
     @Transactional(readOnly = true)
     public BillOperation getBillOperation(UUID id) {
-
         return billOperationRepository.getById(id);
     }
 
