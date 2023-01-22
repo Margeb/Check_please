@@ -32,7 +32,7 @@
                                 </tr>
                                 <tr th:each="bill : ${bills}">
                                     <td th:text="${bill.date}">Bill date</td>
-                                    <td><a class="bill-links" th:text="${bill.name}" th:href="@{${group.id} + '/bills/' + ${bill.id}}">Bill name</a></td>
+                                    <td><a class="singleBillButton" th:text="${bill.name}" th:href="@{${group.id} + '/bills/' + ${bill.id}}">Bill name</a></td>
                                 </tr>
                                 </tbody>
                             </table>

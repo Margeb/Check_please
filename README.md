@@ -13,7 +13,7 @@ Check, please - application that allows You to track all the expenses among your
 ## General Information
 
 The idea behind creating this app is to track how much money each person spend when ordering something for the group (mostly food). Let's say someone ordered food, paid for everyone and instead of getting paid they can save the information how much that person did spend and what was the cost of each person's food. You can easily create new groups, add people to it and create new bills.
-The application is based on the REST architecture and the Minimum Viable Product (MVP) model.
+The application is based on the REST architecture, the Minimum Viable Product (MVP) model and MVC (Model-View-Controller) architectural pattern.
 
 ## Technologies Used
 ### Development
