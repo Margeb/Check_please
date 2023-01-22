@@ -3,7 +3,6 @@ package pl.margeb.checkplease.person.controller;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,14 +22,8 @@ import java.util.UUID;
 public class PersonViewController {
 
     private final GroupService groupService;
+
     private final PersonService personService;
-
-    @GetMapping
-    public String indexView(Model model, @PathVariable("group-id")UUID groupId){
-        model.addAttribute("groups", groupService.getGroups(Pageable.unpaged()));
-
-        return "group/index";
-    }
 
     @GetMapping("add")
     public String addView(Model model, @PathVariable("group-id") UUID groupId){
