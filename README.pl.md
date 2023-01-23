@@ -14,7 +14,7 @@ Check, please - aplikacja, która pozwala na śledzenie wydatków w grupie przyj
 ## Informacje ogólne
 
 Głównym założeniem aplikacji jest śledzenie ile każda osoba wydaje pieniędzy zamawiając coś (głównie jedzenie) dla grupy znajomych. Załóżmy, że ktoś zamówił jedzenie, zapłacił za wszystkich i zamiast od razu dostać pieniądze to możemy zapisać ile dana osoba zapłaciła i ile kosztowało jedzenie każdej osoby. Możemy łatwo tworzyć nowe grupy, dodawać do nich osoby oraz tworzyć nowe rachunki.
-Aplikacja jest oparta na architekturze REST, modelu Minimum Viable Product (MVP) i wzorcu projektowym MVC (Model-View-Controller).
+Aplikacja jest oparta na architekturze REST, Minimum Viable Product (MVP) i wzorcu projektowym MVC (Model-View-Controller).
 
 ## Zastosowane technologie
 
