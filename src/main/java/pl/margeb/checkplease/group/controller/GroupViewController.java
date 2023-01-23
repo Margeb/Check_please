@@ -29,7 +29,6 @@ public class GroupViewController {
 
     private final PersonService personService;
 
-
     @GetMapping
     public String indexView(Model model){
         model.addAttribute("groups", groupService.getGroups(Pageable.unpaged()));
