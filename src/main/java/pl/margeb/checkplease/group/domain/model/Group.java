@@ -40,6 +40,8 @@ public class Group {
     public Group(String name) {
         this();
         this.name = name;
+        this.people = new HashSet<>();
+        this.bills = new HashSet<>();
     }
 
     public Set<Bill> getBills() {
@@ -52,10 +54,6 @@ public class Group {
 
     public Group addBill(Bill bill)
     {
-        if(bills == null) {
-            bills = new HashSet<>();
-        }
-
         bill.setGroupId(this.getId());
         bills.add(bill);
 
@@ -63,11 +61,6 @@ public class Group {
     }
 
     public void addPerson(Person person) {
-
-        if(people == null){
-            people = new HashSet<>();
-        }
-
         person.setGroupId(this.getId());
         people.add(person);
     }
