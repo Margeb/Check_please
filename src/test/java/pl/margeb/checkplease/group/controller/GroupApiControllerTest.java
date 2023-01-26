@@ -9,16 +9,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.margeb.checkplease.group.domain.model.Group;
 import pl.margeb.checkplease.group.service.GroupService;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -58,6 +58,7 @@ class GroupApiControllerTest {
     @Test
     void shouldGetGroups() throws Exception {
         mockMvc.perform(get("http://localhost:8080/api/v1/groups"))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(
                         content().json(objectMapper.writeValueAsString(page))
@@ -65,18 +66,42 @@ class GroupApiControllerTest {
     }
 
     @Test
-    void getGroup() {
+    void shouldGetGroup() throws Exception{
+        mockMvc.perform(get("http://localhost:8080/api/v1/groups/{group-id}", group.getId()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(
+                        content().json(objectMapper.writeValueAsString(group))
+                );
     }
 
     @Test
-    void createGroup() {
+    void shouldCreateGroup() throws Exception{
+        mockMvc.perform(post("http://localhost:8080/api/v1/groups")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(group))
+                )
+                .andExpect(status().isCreated())
+                .andExpect(
+                        content().json(objectMapper.writeValueAsString(group))
+                );
     }
 
     @Test
-    void updateGroup() {
+    void shouldUpdateGroup() throws Exception{
+        mockMvc.perform(put("http://localhost:8080/api/v1/groups/{group-id}", group.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(group))
+                )
+                .andExpect(status().isAccepted())
+                .andExpect(
+                        content().json(objectMapper.writeValueAsString(group))
+                );
     }
 
     @Test
-    void deleteGroup() {
+    void shouldDeleteGroup() throws Exception{
+        mockMvc.perform(delete("http://localhost:8080/api/v1/groups/{group-id}", group.getId()))
+                .andExpect(status().isNoContent());
     }
 }
